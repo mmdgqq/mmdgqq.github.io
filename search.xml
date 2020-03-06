@@ -1,6 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>4使用</title>
+    <url>/2020/03/06/4%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="1：目录结构"><a href="#1：目录结构" class="headerlink" title="1：目录结构"></a>1：目录结构</h1><p>dist  是项目做完之后把发布的东西放在里面的一个目录</p>
+<p>​       是表示这里存放的一个产品级别的目录</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200213162350430.png" alt="image-20200213162350430"></p>
+<p>main.js是项目的入口文件</p>
+<p>index.html是项目的首页</p>
+<h1 id="2：基本使用"><a href="#2：基本使用" class="headerlink" title="2：基本使用"></a>2：基本使用</h1><p><strong>1：</strong>import  $ from ‘jquery’</p>
+<p>import 是es6的语法。 from后面是模板文件的位置</p>
+<p>​                                       如果只是模块名，可以不带有路径</p>
+<p>​                                       但是需要配置文件告诉路径在哪里</p>
+<p>​                                        后缀可以省略</p>
+<p><strong>2：</strong>webpack可以处理js的兼容问题</p>
+<p><strong>3：</strong>在安装好webpack工具的前提下，可以使用如下命令进行对文件进行打包</p>
+<p><strong>webpack  要打包的文件的路径  打包好的文件的路径</strong></p>
+<h1 id="3：配置"><a href="#3：配置" class="headerlink" title="3：配置"></a>3：配置</h1><p>在根目录下新建webpack的配置文件</p>
+<p>webpack.config.js</p>
+<h2 id="1：配置webpack自动监听代码的改变"><a href="#1：配置webpack自动监听代码的改变" class="headerlink" title="1：配置webpack自动监听代码的改变"></a>1：配置webpack自动监听代码的改变</h2><h3 id="1：简单配置"><a href="#1：简单配置" class="headerlink" title="1：简单配置"></a>1：简单配置</h3><p>   使用webpack -dev-server 这个工具，来实现自动打包编译的功能</p>
+<p>   npm  i webpack-dev-server -D</p>
+<p>安装完之后当代码改动之后，在控制台运行命令webpack-dev-server就会自动打包代码了，</p>
+<p>但是可以运行的命令是需要全局安装的</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200213185054958.png" alt="image-20200213185054958"></p>
+<p>在package.json中配置一下，</p>
+<p>在命令行中输入 npm run dev 就可以运行了</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200213190424748.png" alt="image-20200213190424748"></p>
+<p>这个工具帮我们在项目的根目录下放置了一个虚拟的bundle.js</p>
+<p>并且启动了一个服务器</p>
+<h3 id="2：更便捷的配置"><a href="#2：更便捷的配置" class="headerlink" title="2：更便捷的配置"></a>2：更便捷的配置</h3><p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200213190749876.png" alt="image-20200213190749876"></p>
+<p><strong>–open –port 3000  –contentBase src  –hot</strong></p>
+<p>在我们npm run dev 之后可以实现自动的打开服务器指定端口下的文件夹</p>
+<p>–contentBase src  可以指定 默认打开的文件（ src下放的首页）</p>
+<p>–hot   热重载，热更新（减少不必要的代码的更新）</p>
+<h2 id="2：配置将页面也加载在内存中"><a href="#2：配置将页面也加载在内存中" class="headerlink" title="2：配置将页面也加载在内存中"></a>2：配置将页面也加载在内存中</h2><p>利用html-webpack-plugin 插件</p>
+<p>`</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">const HtmlWebpackPlugin = require('html-webpack-plugin'); //通过 npm 安装</span><br><span class="line">const webpack = require('webpack'); //访问内置的插件</span><br><span class="line">const path = require('path');</span><br><span class="line"></span><br><span class="line">const config = &#123;</span><br><span class="line">  entry: './path/to/my/entry/file.js',</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: 'my-first-webpack.bundle.js',</span><br><span class="line">    path: path.resolve(__dirname, 'dist')</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    new webpack.optimize.UglifyJsPlugin(),</span><br><span class="line">    new HtmlWebpackPlugin(&#123;template: './src/index.html'&#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports = config;</span><br></pre></td></tr></table></figure>
+
+<p>`</p>
+<p>这样呢，在内存中会生成一个新的html的文件，并且会引入bundle.js</p>
+<h2 id="3：配置css打包css文件"><a href="#3：配置css打包css文件" class="headerlink" title="3：配置css打包css文件"></a>3：配置css打包css文件</h2><h3 id="1：处理css"><a href="#1：处理css" class="headerlink" title="1：处理css"></a>1：处理css</h3><p>1：webpack默认打包处理js文件，无法处理其他 文件</p>
+<p>2:处理其他文件需要安装 第三方的loader 加载</p>
+<p>3：打包css 需要安装  css-loader style-loader</p>
+<p>4: 安装好之后需要在webpack.config.js的</p>
+<p>   module 节点中配置这些加载器</p>
+<p>   因为webpack文档更新的原因，具体应当以官方为准</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200214121951970.png" alt="image-20200214121951970"></p>
+<p>   在调用loader的时候是从后往前调用的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-处理less"><a href="#2-处理less" class="headerlink" title="2:处理less"></a>2:处理less</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">    ...</span><br><span class="line">    module: &#123;</span><br><span class="line">        rules: [&#123;</span><br><span class="line">            test: /\.less$/,</span><br><span class="line">            use: [&#123;</span><br><span class="line">                loader: "style-loader" // creates style nodes from JS strings</span><br><span class="line">            &#125;, &#123;</span><br><span class="line">                loader: "css-loader" // translates CSS into CommonJS</span><br><span class="line">            &#125;, &#123;</span><br><span class="line">                loader: "less-loader" // compiles Less to CSS</span><br><span class="line">            &#125;]</span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>用法同css</p>
+<p>但是这样的样式文件时依赖于javascript的，</p>
+<p>所以生产上建议：使用一个</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">extract-text-webpack-plugin</span><br></pre></td></tr></table></figure>
+
+<p>建议使用<a href="https://github.com/webpack-contrib/extract-text-webpack-plugin" target="_blank" rel="noopener">ExtractTextPlugin</a>将样式表提取到生产中的专用文件中。这样，您的样式就不会依赖JavaScript：</p>
+<p><a href="https://www.webpackjs.com/loaders/less-loader/" target="_blank" rel="noopener">https://www.webpackjs.com/loaders/less-loader/</a></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ExtractTextPlugin = <span class="built_in">require</span>(<span class="string">"extract-text-webpack-plugin"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> extractLess = <span class="keyword">new</span> ExtractTextPlugin(&#123;</span><br><span class="line">    filename: <span class="string">"[name].[contenthash].css"</span>,</span><br><span class="line">    disable: process.env.NODE_ENV === <span class="string">"development"</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [&#123;</span><br><span class="line">            test: <span class="regexp">/\.less$/</span>,</span><br><span class="line">            use: extractLess.extract(&#123;</span><br><span class="line">                use: [&#123;</span><br><span class="line">                    loader: <span class="string">"css-loader"</span></span><br><span class="line">                &#125;, &#123;</span><br><span class="line">                    loader: <span class="string">"less-loader"</span></span><br><span class="line">                &#125;],</span><br><span class="line">                <span class="comment">// use style-loader in development</span></span><br><span class="line">                fallback: <span class="string">"style-loader"</span></span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        extractLess</span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-配置关于路径url问题"><a href="#4-配置关于路径url问题" class="headerlink" title="4:配置关于路径url问题"></a>4:配置关于路径url问题</h2><h3 id="1-安装和基本使用"><a href="#1-安装和基本使用" class="headerlink" title="1:安装和基本使用"></a>1:安装和基本使用</h3><p>默认情况下，webpack无法处理css文件中的url地址，不管是图片还是字体库，只要是url都处理不了</p>
+<p>如果用到了路径，需要安装url-loader,file-loader 加载器</p>
+<p>url-loader依赖于file-loader  </p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200214124142860.png" alt="image-20200214124142860"></p>
+<p>  name:设置打包后的名字  上图这么写 是为了  打包前叫什么名字，打包后还叫什么名字</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200214140811096.png" alt="image-20200214140811096"></p>
+<p>如上红框的值是为了防止图片名冲突的一种方法，取生成的图片的hsah值的前8位拼接上 图片名</p>
+<h2 id="5：配置url处理字体"><a href="#5：配置url处理字体" class="headerlink" title="5：配置url处理字体"></a>5：配置url处理字体</h2><p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200214142029580.png" alt="image-20200214142029580"></p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200214142230147.png" alt="image-20200214142230147"></p>
+<p>test中要把五种字体文件都写上去</p>
+<h2 id="6：配置babel"><a href="#6：配置babel" class="headerlink" title="6：配置babel"></a>6：配置babel</h2><p>在webpack中 ,默认只能处理一部分es6的语法，一则更高的es6或者es7的语法，webpack是处理不了的，这时候，需要借助babael转换成为可以处理的代码</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install babel-loader babel-core babel-preset-env webpack</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200214143938994.png" alt="image-20200214143938994"></p>
+<p>@babel/preset-env  也需要安装一下</p>
+<p>总之出现错误看提示</p>
+<p>配置文件.babelrc文件的配置（.babelrc是Babel的配置文件，放在项目根目录下，使用Babel的第一步就是配置这个文件。该文件用来设置转码规则和插件，基本格式如下。）</p>
+<p>熟悉linux的话一定知道，rc结尾的文件通常代表运行时自动加载的文件，配置等等</p>
+<h3 id="1-babelrc文件是用来干嘛的？"><a href="#1-babelrc文件是用来干嘛的？" class="headerlink" title="1. .babelrc文件是用来干嘛的？"></a>1. .babelrc文件是用来干嘛的？</h3><p>.babelrc是Babel的配置文件，放在项目根目录下，使用Babel的第一步就是配置这个文件。</p>
+<h3 id="2-如何配置该文件"><a href="#2-如何配置该文件" class="headerlink" title="2. 如何配置该文件"></a>2. 如何配置该文件</h3><p>该文件用来设置转码规则和插件，基本格式如下。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [],</span><br><span class="line">    <span class="attr">"plugins"</span>: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>presets字段设定转码规则，官方提供以下的规则集，你可以根据需要安装。</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ES2015转码规则</span></span><br><span class="line">$ npm install --save-dev babel-preset-es2015</span><br><span class="line"></span><br><span class="line"><span class="comment"># react转码规则</span></span><br><span class="line">$ npm install --save-dev babel-preset-react</span><br><span class="line"></span><br><span class="line"><span class="comment"># ES7不同阶段语法提案的转码规则（共有4个阶段），选装一个</span></span><br><span class="line">$ npm install --save-dev babel-preset-stage-<span class="number">0</span></span><br><span class="line">$ npm install --save-dev babel-preset-stage-<span class="number">1</span></span><br><span class="line">$ npm install --save-dev babel-preset-stage-<span class="number">2</span></span><br><span class="line">$ npm install --save-dev babel-preset-stage-<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，将这些规则加入.babelrc。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [</span><br><span class="line">    <span class="string">"es2015"</span>,</span><br><span class="line">    <span class="string">"react"</span>,</span><br><span class="line">    <span class="string">"stage-2"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"plugins"</span>: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>presets 其实就是一堆plugins的预设起到了方便的作用 如果不采用 presets 完全可以单独引用某个功能</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [<span class="string">"es2015"</span>, <span class="string">"stage-2"</span>],</span><br><span class="line">    <span class="attr">"plugins"</span>: [<span class="string">"transform-runtime"</span>],</span><br><span class="line">    <span class="attr">"comments"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>webpack基础</category>
+      </categories>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3安装</title>
+    <url>/2020/03/06/3%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h1><p>webpack是一个项目打包工具，使用前需要先安装工具</p>
+<p><a href="https://blog.csdn.net/hxy19971101/article/details/79558599" target="_blank" rel="noopener">https://blog.csdn.net/hxy19971101/article/details/79558599</a></p>
+<p>1： <strong>npm i webpack -g</strong>   全局安装</p>
+<p><strong>2:npm i webpack-cli -g (新版本webpack安装的时候必须要webpack-cli)</strong></p>
+<p>3:在path中配置webpack环境变量（C:\Program Files\nodejs\node_global）是安装在node的安装目录下的node_global下</p>
+<p>*<em>npm i webpack –save–dev *</em>   项目安装</p>
+<p>如果没有正确安装，在cmd中会出现命令不可以使用的错误</p>
+<p>–save：将保存配置信息到pacjage.json。默认为dependencies节点中。</p>
+<p>–dev：将保存配置信息devDependencies节点中。</p>
+<p>因此：</p>
+<p>–save：将保存配置信息到pacjage.json的dependencies节点中。</p>
+<p>–save-dev：将保存配置信息到pacjage.json的devDependencies节点中。</p>
+<p>dependencies：运行时的依赖，发布后，即生产环境下还需要用的模块</p>
+<p>devDependencies：开发时的依赖。里面的模块是开发时用的，发布时用不到它。</p>
+<p>npm install module_name -S  即  npm install module_name –save  写入dependencies</p>
+<p>npm install module_name -D  即  npm install module_name –save-dev 写入devDependencies</p>
+<p>npm install module_name -g 全局安装(命令行使用)</p>
+]]></content>
+      <categories>
+        <category>webpack基础</category>
+      </categories>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2引入</title>
+    <url>/2020/03/06/2%E5%BC%95%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="1-问题"><a href="#1-问题" class="headerlink" title="1:问题"></a>1:问题</h1><p>1：在网页中静态资源多了之后，会使网页的加载速度变慢，</p>
+<p>因为会发起很多的二次请求</p>
+<p>可以使用  —-合并 压缩，精灵图 ，图片的base64编码（适合小图片）去处理，加快网页加载</p>
+<p>2：bootstrap是依赖jauery包的，</p>
+<p>​     单独使用需要</p>
+<p>   处理错综复杂的包依赖关系</p>
+<h1 id="2-webpack"><a href="#2-webpack" class="headerlink" title="2:webpack"></a>2:webpack</h1><p>​       是一个项目构建工具，基于node.js</p>
+<p>   与gulp的区别：gulp是基于task任务的</p>
+<p>​                             webpack是基于项目进行的</p>
+]]></content>
+      <categories>
+        <category>webpack基础</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vue项目结构及文件介绍-- build文件夹</title>
     <url>/2020/03/06/17vue%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E6%96%87%E4%BB%B6%E4%BB%8B%E7%BB%8D-build%E6%96%87%E4%BB%B6%E5%A4%B9/</url>
     <content><![CDATA[<h1 id="vue项目结构及文件介绍——-build文件夹"><a href="#vue项目结构及文件介绍——-build文件夹" class="headerlink" title="vue项目结构及文件介绍—— build文件夹"></a>vue项目结构及文件介绍—— build文件夹</h1><p><img src="https://user-gold-cdn.xitu.io/2019/4/19/16a3348f0434256c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img"></p>
@@ -58,6 +215,26 @@
       </categories>
       <tags>
         <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1nrm</title>
+    <url>/2020/03/06/1nrm/</url>
+    <content><![CDATA[<h1 id="1-安装"><a href="#1-安装" class="headerlink" title="1:安装"></a>1:安装</h1><p>在cmd中，npm install  nrm -g 进行去全局安装</p>
+<p>nrm 只是提供了一一些常用的npm包镜像地址，能够让我们安装包的时候切换服务器地址</p>
+<p>下载安装包的还是npm安装包</p>
+<p>切换服务器地址：</p>
+<p>nrm use taobao</p>
+<p>npm i cnpm -g   此时的cnpm是一个下载工具</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200213155512290.png" alt="image-20200213155512290"></p>
+<p>而：图片中的cnpm是一个镜像地址。</p>
+<p>两者是不同的，cnpm安装工具是需要通过npm i cnpm -g 命令安装使用的</p>
+]]></content>
+      <categories>
+        <category>webpack基础</category>
+      </categories>
+      <tags>
+        <tag>webpack</tag>
       </tags>
   </entry>
   <entry>
