@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-06T06:59:55.990Z</updated>
+  <updated>2020-03-06T07:56:41.341Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>3vue组件</title>
+    <link href="http://yoursite.com/2020/03/06/3vue%E7%BB%84%E4%BB%B6/"/>
+    <id>http://yoursite.com/2020/03/06/3vue%E7%BB%84%E4%BB%B6/</id>
+    <published>2020-03-06T07:45:57.000Z</published>
+    <updated>2020-03-06T07:56:41.341Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="1：创建组件的方式"><a href="#1：创建组件的方式" class="headerlink" title="1：创建组件的方式"></a>1：创建组件的方式</h1><p>  我们强烈推荐遵循 <a href="https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name" target="_blank" rel="noopener">W3C 规范</a>中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。</p><h2 id="1：创建一个全局的Vue组件"><a href="#1：创建一个全局的Vue组件" class="headerlink" title="1：创建一个全局的Vue组件"></a>1：<strong>创建一个全局的Vue组件</strong></h2><p>​                     </p><p>​      <strong>1:通过Vue.extend方法**</strong>，接收一个返回值 是创建出来的组件模板对象，**里面传一个对象</p><p>通过 template 属性，把组件的结构写进去</p><p>​      2:Vue.component(“组件名称-驼峰命名规则”)</p><p>注调用组件的时候，要全部写成小写，中间的驼峰的地方要用“-”连接</p><a id="more"></a><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\8c4d0bb916bf41f2846edee0764889f2\clipboard.png)</p><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\db4994e75a3243eb8b5514c86d2e7170\clipboard.png)</p><p><strong>将两个步骤合并成了一步</strong>：</p><p>写法如下：</p><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\0232ea188f4b411baaacfebd891c07c9\clipboard.png)</p><h2 id="2：创建的第二种方式：写法更简便"><a href="#2：创建的第二种方式：写法更简便" class="headerlink" title="2：创建的第二种方式：写法更简便"></a>2：创建的第二种方式：写法更简便</h2><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\b2d003d8369e414dbf817ea1846e0d3d\clipboard.png)</p><h2 id="3-创建的第3种方式：结构更好一点"><a href="#3-创建的第3种方式：结构更好一点" class="headerlink" title="3:创建的第3种方式：结构更好一点"></a>3:创建的第3种方式：结构更好一点</h2><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\4bb97d01973f474ab2fb8c0bc4565b88\clipboard.png)</p><h2 id="4：所有的参数"><a href="#4：所有的参数" class="headerlink" title="4：所有的参数"></a><strong>4：所有的参数</strong></h2><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\b274ed9ca4da4ab9a30fddbf99cd3811\clipboard.png)</p><h1 id="2：定义私有组件："><a href="#2：定义私有组件：" class="headerlink" title="2：定义私有组件："></a><strong>2：定义私有组件：</strong></h1><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\dec61fa33ebe47f28ab37795097ccf50\clipboard.png)</p><h1 id="3：组件中的data对象"><a href="#3：组件中的data对象" class="headerlink" title="3：组件中的data对象"></a><strong>3：组件中的data对象</strong></h1><p><strong>必须是一个函数，并且需要返回一个对象。</strong></p><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\5cbe9b8b59e14f8b9d4a8708af2bd5cd\clipboard.png)</p><h1 id="4：组件的稍微的使用"><a href="#4：组件的稍微的使用" class="headerlink" title="4：组件的稍微的使用"></a>4：组件的稍微的使用</h1><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\0864d4626b39411dab59d222b88b0b96\clipboard.png)</p><h1 id="5：登陆注册组件的切换"><a href="#5：登陆注册组件的切换" class="headerlink" title="5：登陆注册组件的切换"></a><strong>5：登陆注册组件的切换</strong></h1><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\9164d642188f43a69d4d037941830722\clipboard.png)</p><p><strong>登陆注册组件的切换2</strong></p><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\f11d2ae6bc1f45d381ad6f458f780f3f\clipboard.png)</p><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\bced782b61af44f9816c64c24eeb5ad2\clipboard.png)</p><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\5927a7fe8b8e4c31b70f8d7ca38fc76e\clipboard.png)</p><h1 id="6：动画"><a href="#6：动画" class="headerlink" title="6：动画"></a>6：动画</h1><h1 id="通过transition-标签的mode属性，切换组件的动画切换方式，out-in-代表先出去再进来"><a href="#通过transition-标签的mode属性，切换组件的动画切换方式，out-in-代表先出去再进来" class="headerlink" title="通过transition 标签的mode属性，切换组件的动画切换方式，out-in 代表先出去再进来**"></a>通过transition 标签的mode属性，切换组件的动画切换方式，out-in 代表先出去再进来**</h1><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\70e5e52a21144be49c915b56e686e9f6\clipboard.png)</p><h1 id="7：flag标识符的作用"><a href="#7：flag标识符的作用" class="headerlink" title="7：flag标识符的作用**"></a>7：flag标识符的作用**</h1><p>![img](D:\Program Files (x86)\有道云笔记\slive21@163.com\03a7fe44d3544364b8e0b5139f257142\clipboard.png)</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;1：创建组件的方式&quot;&gt;&lt;a href=&quot;#1：创建组件的方式&quot; class=&quot;headerlink&quot; title=&quot;1：创建组件的方式&quot;&gt;&lt;/a&gt;1：创建组件的方式&lt;/h1&gt;&lt;p&gt;  我们强烈推荐遵循 &lt;a href=&quot;https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;W3C 规范&lt;/a&gt;中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。&lt;/p&gt;
+&lt;h2 id=&quot;1：创建一个全局的Vue组件&quot;&gt;&lt;a href=&quot;#1：创建一个全局的Vue组件&quot; class=&quot;headerlink&quot; title=&quot;1：创建一个全局的Vue组件&quot;&gt;&lt;/a&gt;1：&lt;strong&gt;创建一个全局的Vue组件&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;​                     &lt;/p&gt;
+&lt;p&gt;​      &lt;strong&gt;1:通过Vue.extend方法**&lt;/strong&gt;，接收一个返回值 是创建出来的组件模板对象，**里面传一个对象&lt;/p&gt;
+&lt;p&gt;通过 template 属性，把组件的结构写进去&lt;/p&gt;
+&lt;p&gt;​      2:Vue.component(“组件名称-驼峰命名规则”)&lt;/p&gt;
+&lt;p&gt;注调用组件的时候，要全部写成小写，中间的驼峰的地方要用“-”连接&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="vue基础" scheme="http://yoursite.com/categories/vue%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="vue" scheme="http://yoursite.com/tags/vue/"/>
+    
+  </entry>
   
   <entry>
     <title>1指令</title>
