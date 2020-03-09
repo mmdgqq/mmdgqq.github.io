@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="node.js," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="三月十天" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="package.json简单说来呢，这个 package.json 文件就是定义了项目的各种元信息，包括项目的名称，git repo 的地址，作者等等。最重要的是，其中定义了我们项目的依赖，这样这个项目在部署时，我们就不必将 node_modules 目录也上传到服务器，服务器在拿到我们的项目时，只需要执行 npm install，则 npm 会自动读取 package.json 中的依赖并安装在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7补充">
+<meta property="og:url" content="http://yoursite.com/2020/03/09/7%E8%A1%A5%E5%85%85/index.html">
+<meta property="og:site_name" content="三月十天">
+<meta property="og:description" content="package.json简单说来呢，这个 package.json 文件就是定义了项目的各种元信息，包括项目的名称，git repo 的地址，作者等等。最重要的是，其中定义了我们项目的依赖，这样这个项目在部署时，我们就不必将 node_modules 目录也上传到服务器，服务器在拿到我们的项目时，只需要执行 npm install，则 npm 会自动读取 package.json 中的依赖并安装在">
+<meta property="article:published_time" content="2020-03-09T07:50:59.000Z">
+<meta property="article:modified_time" content="2020-03-09T03:32:59.555Z">
+<meta property="article:author" content="gqq">
+<meta property="article:tag" content="node.js">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/09/7补充/"/>
+
+
+
+
+
+  <title>7补充 | 三月十天</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月十天</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">mmdgqq</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/09/7%E8%A1%A5%E5%85%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gqq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月十天">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">7补充</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-09T15:50:59+08:00">
+                2020-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/node-js%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index">
+                    <span itemprop="name">node.js基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h1><p>简单说来呢，这个 package.json 文件就是定义了项目的各种元信息，包括项目的名称，git repo 的地址，作者等等。最重要的是，其中定义了我们项目的依赖，这样这个项目在部署时，我们就不必将 <code>node_modules</code> 目录也上传到服务器，服务器在拿到我们的项目时，只需要执行 <code>npm install</code>，则 npm 会自动读取 package.json 中的依赖并安装在项目的 <code>node_modules</code> 下面，然后程序就可以在服务器上跑起来了。</p>
+<h1 id="一：理解node-js基于事件驱动"><a href="#一：理解node-js基于事件驱动" class="headerlink" title="一：理解node.js基于事件驱动"></a>一：理解node.js基于事件驱动</h1><p>绝大部分 Node.js 对象，比如 HTTP 请求、响应以及“流”，都使用了 <code>eventEmitter</code> 模块来支持监听和触发事件。</p>
+<p>EventEmitter 是 Node.js 中基于事件驱动的架构的核心，它用于对象之间通信，很多 Node.js 的原生模块都继承自这个模块。</p>
+<p>事件驱动最简单的形式是常见的 Node.js 函数回调，例如：<code>fs.readFile</code>。事件被触发时，Node 就会调用回调函数，所以回调函数可视为事件处理程序。</p>
+<p>让我们来探究一下这个基础形式。</p>
+<h4 id="Node，在你准备好的时候调用我吧！"><a href="#Node，在你准备好的时候调用我吧！" class="headerlink" title="Node，在你准备好的时候调用我吧！"></a>Node，在你准备好的时候调用我吧！</h4><p>以前没有原生的 promise、async/await 特性支持，Node 最原始的处理异步的方式是使用回调。</p>
+<p>回调函数从本质上讲就是作为参数传递给其他函数的函数，在 JS 中这是可能的，因为函数是一等公民。</p>
+<p>回调函数并不一定异步调用，这一点非常重要。在函数中，我们可以根据需要同步/异步调用回调函数。</p>
+<p>例如，在下面例子中，主函数 <code>fileSize</code> 接收一个回调函数 <code>cb</code> 为参数，根据不同情况以同步/异步方式调用 <code>cb</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function fileSize (fileName, cb) &#123;</span><br><span class="line">  if (typeof fileName !&#x3D;&#x3D; &#39;string&#39;) &#123;</span><br><span class="line">    return cb(new TypeError(&#39;argument should be string&#39;)); &#x2F;&#x2F; 同步</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  fs.stat(fileName, (err, stats) &#x3D;&gt; &#123;</span><br><span class="line">    if (err) &#123; return cb(err); &#125; &#x2F;&#x2F; 异步</span><br><span class="line"></span><br><span class="line">    cb(null, stats.size); &#x2F;&#x2F; 异步</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>请注意，这并不是一个好的实践，它也许会带来一些预期外的错误。最好将主函数设计为始终同步或始终异步地使用回调。</p>
+<p>我们再来看看下面这种典型的回调风格处理的异步 Node 函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const readFileAsArray &#x3D; function(file, cb) &#123;</span><br><span class="line">  fs.readFile(file, function(err, data) &#123;</span><br><span class="line">    if (err) &#123;</span><br><span class="line">      return cb(err);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const lines &#x3D; data.toString().trim().split(&#39;\n&#39;);</span><br><span class="line">    cb(null, lines);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;复制代码</span><br></pre></td></tr></table></figure>
+
+<p><code>readFileAsArray</code> 以一个文件路径和回调函数 callback 为参，读取文件并切割成行的数组来当做参数调用 callback。</p>
+<p>这里有一个使用它的示例，假设同目录下我们有一个 <code>numbers.txt</code> 文件中有如下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15复制代码</span><br></pre></td></tr></table></figure>
+
+<p>要找出这个文件中的奇数的个数，我们可以像下面这样调用 <code>readFileAsArray</code> 函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">readFileAsArray(&#39;.&#x2F;numbers.txt&#39;, (err, lines) &#x3D;&gt; &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line"></span><br><span class="line">  const numbers &#x3D; lines.map(Number);</span><br><span class="line">  const oddNumbers &#x3D; numbers.filter(n &#x3D;&gt; n%2 &#x3D;&#x3D;&#x3D; 1);</span><br><span class="line">  console.log(&#39;Odd numbers count:&#39;, oddNumbers.length);</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>这段代码会读取数组中的字符串，解析成数字并统计奇数个数。</p>
+<p>在 NodeJS 的回调风格中的写法是这样的：回调函数的第一个参数是一个可能为 null 的错误对象 err，而回调函数作为主函数的最后一个参数传入。 你应该永远这么做，因为使用者们极有可能是这么以为的。</p>
+<h4 id="现代-JavaScript-中回调函数的替代品"><a href="#现代-JavaScript-中回调函数的替代品" class="headerlink" title="现代 JavaScript 中回调函数的替代品"></a>现代 JavaScript 中回调函数的替代品</h4><p>在 ES6+ 中，我们有了 Promise 对象。对于异步 API，它是 callback 的有力竞争者。不再需要将 callback 作为参数传递的同时处理错误信息，Promise 对象允许我们分别处理成功和失败两种情况，并且链式的调用多个异步方法避免了回调的嵌套（callback hell，回调地狱）。</p>
+<p>如果刚刚的 <code>readFileAsArray</code> 方法允许使用 Promise，它的调用将是这个样子的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">readFileAsArray(&#39;.&#x2F;numbers.txt&#39;)</span><br><span class="line">  .then(lines &#x3D;&gt; &#123;</span><br><span class="line">    const numbers &#x3D; lines.map(Number);</span><br><span class="line">    const oddNumbers &#x3D; numbers.filter(n &#x3D;&gt; n%2 &#x3D;&#x3D;&#x3D; 1);</span><br><span class="line">    console.log(&#39;Odd numbers count:&#39;, oddNumbers.length);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(console.error);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>作为调用 callback 的替代品，我们用 <code>.then</code> 函数来接受主方法的返回值，<code>.then</code> 中我们可以和之前在回调函数中一样处理数据，而对于错误我们用<code>.catch</code>函数来处理。</p>
+<p>现代 JavaScript 中的 Promise 对象，使主函数支持 Promise 接口变得更加容易。我们把刚刚的 <code>readFileAsArray</code> 方法用改写一下以支持 Promise：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const readFileAsArray &#x3D; function(file, cb &#x3D; () &#x3D;&gt; &#123;&#125;) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    fs.readFile(file, function(err, data) &#123;</span><br><span class="line">      if (err) &#123;</span><br><span class="line">        reject(err);</span><br><span class="line">        return cb(err);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      const lines &#x3D; data.toString().trim().split(&#39;\n&#39;);</span><br><span class="line">      resolve(lines);</span><br><span class="line">      cb(null, lines);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>现在这个函数返回了一个 Promise 对象，该对象包含 <code>fs.readFile</code> 的异步调用，Promise 对象暴露了两个参数：<code>resolve</code> 函数和 <code>reject</code> 函数。</p>
+<p><code>reject</code> 函数的作用就和我们之前 callback 中处理错误是一样的，而 <code>resolve</code> 函数也就和我们正常处理返回值一样。</p>
+<p>剩下唯一要做的就是在实例中指定 <code>reject</code> <code>resolve</code> 函数的默认值，在 Promise 中，我们只要写一个空函数即可，例如 <code>() =&gt; {}</code>.</p>
+<h4 id="在-async-await-中使用-Promise"><a href="#在-async-await-中使用-Promise" class="headerlink" title="在 async/await 中使用 Promise"></a>在 async/await 中使用 Promise</h4><p>当你需要循环异步函数时，使用 Promise 会让你的代码更易阅读，而如果使用回调函数，事情只会变得混乱。</p>
+<p>Promise 是一个小小的进步，generator 是更大一些的小进步，但是 async/await 函数的到来，让这一步变得更有力了，它的编码风格让异步代码就像同步一样易读。</p>
+<p>我们用 async/await 函数特性来改写刚刚的调用 <code>readFileAsArray</code> 过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">async function countOdd () &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const lines &#x3D; await readFileAsArray(&#39;.&#x2F;numbers&#39;);</span><br><span class="line">    const numbers &#x3D; lines.map(Number);</span><br><span class="line">    const oddCount &#x3D; numbers.filter(n &#x3D;&gt; n%2 &#x3D;&#x3D;&#x3D; 1).length;</span><br><span class="line">    console.log(&#39;Odd numbers count:&#39;, oddCount);</span><br><span class="line">  &#125; catch(err) &#123;</span><br><span class="line">    console.error(err);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">countOdd();复制代码</span><br></pre></td></tr></table></figure>
+
+<p>首先我们创建了一个 <code>async</code> 函数，只是在定义 function 的时候前面加了 <code>async</code> 关键字。在 <code>async</code> 函数里，使用关键字 <code>await</code> 使 <code>readFileAsArray</code> 函数好像返回普通变量一样，这之后的编码也好像 <code>readFileAsArray</code> 是同步方法一样。</p>
+<p><code>async</code> 函数的执行过程非常易读，而处理错误只需要在异步调用外面包上一层 <code>try/catch</code> 即可。</p>
+<p>在 <code>async/await</code> 函数中我们我们不需要使用任何特殊 API（像: <code>.then</code> 、 <code>.catch</code>\），我们仅仅使用了特殊关键字，并使用普通 JavaScript 编码即可。</p>
+<p>我们可以在支持 Promise 的函数中使用 <code>async/await</code> 函数，但是不能在回调风格的异步方法中使用它，比如 <code>setTimeout</code> 等等。</p>
+<h3 id="EventEmitter-模块"><a href="#EventEmitter-模块" class="headerlink" title="EventEmitter 模块"></a>EventEmitter 模块</h3><p>EventEmitter 是 Node.js 中基于事件驱动的架构的核心，它用于对象之间通信，很多 Node.js 的原生模块都继承自这个模块。</p>
+<p>模块的概念很简单，Emitter 对象触发已命名事件，使之前已注册的监听器被调用，所以 Emitter 对象有两个主要特征：</p>
+<ul>
+<li>触发已命名事件</li>
+<li>注册和取消注册监听函数</li>
+</ul>
+<p>如何使用呢？我们只需要创建一个类来继承 EventEmitter 即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyEmitter extends EventEmitter &#123;</span><br><span class="line"></span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>实例化前面我们基于 EventEmitter 创建的类，即可得到 Emitter 对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const myEmitter &#x3D; new MyEmitter();复制代码</span><br></pre></td></tr></table></figure>
+
+<p>在 Emitter 对象的生命周期中的任何一点，我们都可以用 emit 方法发出任何已命名的事件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myEmitter.emit(&#39;something-happened&#39;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>触发一个事件即某种情况发生的信号，这些情况通常是关于 Emitter 对象的状态改变的。</p>
+<p>我们使用 <code>on</code> 方法来注册，然后这些监听的方法将会在每一个 Emitter 对象 emit 它们对应名称的事件的时候执行。</p>
+<h4 id="事件-异步"><a href="#事件-异步" class="headerlink" title="事件 != 异步"></a>事件 != 异步</h4><p>让我们看一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const EventEmitter &#x3D; require(&#39;events&#39;);</span><br><span class="line"></span><br><span class="line">class WithLog extends EventEmitter &#123;</span><br><span class="line">  execute(taskFunc) &#123;</span><br><span class="line">    console.log(&#39;Before executing&#39;);</span><br><span class="line">    this.emit(&#39;begin&#39;);</span><br><span class="line">    taskFunc();</span><br><span class="line">    this.emit(&#39;end&#39;);</span><br><span class="line">    console.log(&#39;After executing&#39;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const withLog &#x3D; new WithLog();</span><br><span class="line"></span><br><span class="line">withLog.on(&#39;begin&#39;, () &#x3D;&gt; console.log(&#39;About to execute&#39;));</span><br><span class="line">withLog.on(&#39;end&#39;, () &#x3D;&gt; console.log(&#39;Done with execute&#39;));</span><br><span class="line"></span><br><span class="line">withLog.execute(() &#x3D;&gt; console.log(&#39;*** Executing task ***&#39;));复制代码</span><br></pre></td></tr></table></figure>
+
+<p>WithLog 类是一个 event emitter。它有一个 excute 方法，接收一个 taskFunc 任务函数作为参数，并将此函数的执行包含在 log 语句之间，分别在执行之前和之后调用了 emit 方法。</p>
+<p>执行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Before executing</span><br><span class="line">About to execute</span><br><span class="line">*** Executing task ***</span><br><span class="line">Done with execute</span><br><span class="line">After executing复制代码</span><br></pre></td></tr></table></figure>
+
+<p>我们需要注意的是所有的输出 log 都是同步的，在代码里没有任何异步操作。</p>
+<ul>
+<li>第一步 “Before executing”；</li>
+<li>命名为 begin 的事件 emit 输出了 “About to execute”；</li>
+<li>内含方法的执行输出了“<strong>* Executing task *</strong>”；</li>
+<li>另一个命名事件输出“Done with execute”；</li>
+<li>最后“After executing”。</li>
+</ul>
+<p>如同之前的回调方式，events 并不意味着同步或者异步。</p>
+<p>这一点很重要，假如我们给 <code>excute</code> 传递异步函数 <code>taskFunc</code>，事件的触发就不再精确了。</p>
+<p>可以使用 <code>setImmediate</code> 来模拟这种情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; ...</span><br><span class="line"></span><br><span class="line">withLog.execute(() &#x3D;&gt; &#123;</span><br><span class="line">  setImmediate(() &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&#39;*** Executing task ***&#39;)</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>会输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Before executing</span><br><span class="line">About to execute</span><br><span class="line">Done with execute</span><br><span class="line">After executing</span><br><span class="line">*** Executing task ***复制代码</span><br></pre></td></tr></table></figure>
+
+<p>这明显有问题，异步调用之后不再精确，“Done with execute”、“After executing”出现在了“<strong><em>Executing task</em></strong>”之前（应该在后）。</p>
+<p>当异步方法结束的时候 emit 一个事件，我们需要把 callback/promise 与事件通信结合起来，刚刚的例子证明了这一点。</p>
+<p>使用事件驱动来代替传统回调函数有一个好处是：在定义多个监听器后，我们可以多次对同一个 emit 做出反应。如果要用回调来做到这一点的话，我们需要些很多的逻辑在同一个回调函数中，事件是应用程序允许多个外部插件在应用程序核心之上构建功能的一个好方法，你可以把它们当作钩子点来允许利用状态变化做更多自定义的事。</p>
+<h4 id="异步事件"><a href="#异步事件" class="headerlink" title="异步事件"></a>异步事件</h4><p>我们把刚刚的例子修改一下，将同步改为异步方式，让它更有意思一点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">const fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">const EventEmitter &#x3D; require(&#39;events&#39;);</span><br><span class="line"></span><br><span class="line">class WithTime extends EventEmitter &#123;</span><br><span class="line">  execute(asyncFunc, ...args) &#123;</span><br><span class="line">    this.emit(&#39;begin&#39;);</span><br><span class="line">    console.time(&#39;execute&#39;);</span><br><span class="line">    asyncFunc(...args, (err, data) &#x3D;&gt; &#123;</span><br><span class="line">      if (err) &#123;</span><br><span class="line">        return this.emit(&#39;error&#39;, err);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      this.emit(&#39;data&#39;, data);</span><br><span class="line">      console.timeEnd(&#39;execute&#39;);</span><br><span class="line">      this.emit(&#39;end&#39;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const withTime &#x3D; new WithTime();</span><br><span class="line"></span><br><span class="line">withTime.on(&#39;begin&#39;, () &#x3D;&gt; console.log(&#39;About to execute&#39;));</span><br><span class="line">withTime.on(&#39;end&#39;, () &#x3D;&gt; console.log(&#39;Done with execute&#39;));</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>WithTime 类执行 <code>asyncFunc</code> 函数，使用 <code>console.time</code> 和 <code>console.timeEnd</code> 来返回执行的时间，它 emit 了正确的序列在执行之前和之后，同样 emit error/data 来保证函数的正常工作。</p>
+<p>我们给 <code>withTime</code> emitter 传递一个异步函数 <code>fs.readFile</code> 作为参数，这样就不再需要回调函数，只要监听 <code>data</code> 事件就可以了。</p>
+<p>执行之后的结果如下，正如我们期待的正确事件序列，我们得到了执行的时间，这是很有用的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">About to execute</span><br><span class="line">execute: 4.507ms</span><br><span class="line">Done with execute复制代码</span><br></pre></td></tr></table></figure>
+
+<p>请注意我们是如何将回调函数与事件发生器结合来完成的，如果 <code>asynFunc</code> 同样支持 Promise 的话，我们可以使用 <code>async/await</code> 特性来做到同样的事情：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class WithTime extends EventEmitter &#123;</span><br><span class="line">  async execute(asyncFunc, ...args) &#123;</span><br><span class="line">    this.emit(&#39;begin&#39;);</span><br><span class="line">    try &#123;</span><br><span class="line">      console.time(&#39;execute&#39;);</span><br><span class="line">      const data &#x3D; await asyncFunc(...args);</span><br><span class="line">      this.emit(&#39;data&#39;, data);</span><br><span class="line">      console.timeEnd(&#39;execute&#39;);</span><br><span class="line">      this.emit(&#39;end&#39;);</span><br><span class="line">    &#125; catch(err) &#123;</span><br><span class="line">      this.emit(&#39;error&#39;, err);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>这真的看起来更易读了呢！<code>async/await</code> 特性使我们的代码更加贴近 JavaScript 本身，我认为这是一大进步。</p>
+<h4 id="事件参数及错误"><a href="#事件参数及错误" class="headerlink" title="事件参数及错误"></a>事件参数及错误</h4><p>在之前的例子中，我们使用了额外的参数触发了两个事件。</p>
+<p><code>error</code> 事件使用了 error 对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.emit(&#39;error&#39;, err);复制代码</span><br></pre></td></tr></table></figure>
+
+<p><code>data</code> 事件使用了 data 对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.emit(&#39;data&#39;, data);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在命名事件之后使用任何需要的参数，这些参数将在我们为命名事件注册的监听器函数内部可用。</p>
+<p>例如：<code>data</code> 事件执行的时候，监听函数在注册的时候就会允许我们的接收事件触发的 data 参数，而 asyncFunc 函数也实实在在暴露给了我们。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; do something with data</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p><code>error</code> 事件通常是特例。在我们基于 callback 的例子中，如果没用监听函数来处理错误，Node 进程就会直接终止-。-</p>
+<p>我们写个例子来展示这一点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class WithTime extends EventEmitter &#123;</span><br><span class="line">  execute(asyncFunc, ...args) &#123;</span><br><span class="line">    console.time(&#39;execute&#39;);</span><br><span class="line">    asyncFunc(...args, (err, data) &#x3D;&gt; &#123;</span><br><span class="line">      if (err) &#123;</span><br><span class="line">        return this.emit(&#39;error&#39;, err); &#x2F;&#x2F; Not Handled</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      console.timeEnd(&#39;execute&#39;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const withTime &#x3D; new WithTime();</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, &#39;&#39;); &#x2F;&#x2F; BAD CALL</span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>第一个 execute 函数的调用会触发一个错误，Node 进程会崩溃然后退出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">events.js:163</span><br><span class="line">      throw er; &#x2F;&#x2F; Unhandled &#39;error&#39; event</span><br><span class="line">      ^</span><br><span class="line">Error: ENOENT: no such file or directory, open &#39;&#39;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>第二个 excute 函数调用将受到之前崩溃的影响，可能并不会执行。</p>
+<p>如果我们注册一个监听函数来处理 <code>error</code> 对象，情况就不一样了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">withTime.on(&#39;error&#39;, (err) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; do something with err, for example log it somewhere</span><br><span class="line">  console.log(err)</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>加上了上面的错误处理，第一个 excute 调用的错误会被报告，但 Node 进程不会再崩溃退出了，其它的调用也会正常执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123; Error: ENOENT: no such file or directory, open &#39;&#39; errno: -2, code: &#39;ENOENT&#39;, syscall: &#39;open&#39;, path: &#39;&#39; &#125;</span><br><span class="line">execute: 4.276ms复制代码</span><br></pre></td></tr></table></figure>
+
+<p>记住：Node.js 目前的表现和 Promise 不同 ：只是输出警告，但最终会改变：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: ENOENT: no such file or directory, open &#39;&#39;</span><br><span class="line"></span><br><span class="line">DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.复制代码</span><br></pre></td></tr></table></figure>
+
+<p>另一种处理异常的方法是注册一个全局的 uncaughtException 进程事件，但是，全局的捕获错误对象并不是一个好办法。</p>
+<p>关于 uncaughtException 的建议是不要使用。你一定要用的话（比如说报告发生了什么或者做一些清理工作），应该让进程在此结束：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">process.on(&#39;uncaughtException&#39;, (err) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; something went unhandled.</span><br><span class="line">  &#x2F;&#x2F; Do any cleanup and exit anyway!</span><br><span class="line"></span><br><span class="line">  console.error(err); &#x2F;&#x2F; don&#39;t do just that.</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; FORCE exit the process too.</span><br><span class="line">  process.exit(1);</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>然而，想象在同一时间发生多个错误事件。这意味着上述的 uncaughtException 监听器会多次触发，这可能对一些清理代码是个问题。一个典型例子是，多次调用数据库关闭操作。</p>
+<p>EventEmitter 模块暴露一个 once 方法。这个方法仅允许调用一次监听器，而非每次触发都调用。所以，这是一个 uncaughtException 的实际用例，在第一次未捕获的异常发生时，我们开始做清理工作，并且知道我们最终会退出进程。</p>
+<h4 id="监听器的顺序"><a href="#监听器的顺序" class="headerlink" title="监听器的顺序"></a>监听器的顺序</h4><p>如果我们在同一个事件上注册多个监听器，则监听器会按顺序触发，第一个注册的监听器就是第一个触发的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Length: $&#123;data.length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Characters: $&#123;data.toString().length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的输出结果里，“Length” 将会在 “Characters” 之前，因为我们是按照这个顺序定义的。</p>
+<p>如果你想定义一个监听器，还想插队到前面的话，要使用 prependListener 方法来注册。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Length: $&#123;data.length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.prependListener(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Characters: $&#123;data.toString().length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码使得 “Characters” 在 “Length” 之前。</p>
+<p>最后，想移除的话，用 removeListener 方法就好啦！</p>
+<h1 id="二-阻塞I-O与非阻塞I-O"><a href="#二-阻塞I-O与非阻塞I-O" class="headerlink" title="二:阻塞I/O与非阻塞I/O"></a>二:阻塞I/O与非阻塞I/O</h1><h3 id="一、阻塞I-O"><a href="#一、阻塞I-O" class="headerlink" title="一、阻塞I/O"></a>一、阻塞I/O</h3><p>首先，要从你常用的IO操作谈起，比如read和write，通常IO操作都是阻塞I/O的，也就是说当你调用read时，如果没有数据收到，那么线程或者进程就会被挂起，直到收到数据。阻塞的意思，就是一直等着。阻塞I/O就是等着数据过来，进行读写操作。应用的函数进行调用，但是内核一直没有返回，就一直等着。应用的函数长时间处于等待结果的状态，我们就称为阻塞I/O。每个应用都得等着，每个应用都在等着，浪费啊！很像现实中的情况。大家都不干活，等着数据过来，过来工作一下，没有的话继续等着。</p>
+<h3 id="二、非阻塞I-O"><a href="#二、非阻塞I-O" class="headerlink" title="二、非阻塞I/O"></a>二、非阻塞I/O</h3><p>非阻塞IO很简单，通过fcntl（POSIX）或ioctl（Unix）设为非阻塞模式，这时，当你调用read时，如果有数据收到，就返回数据，如果没有数据收到，就立刻返回一个错误，如EWOULDBLOCK。这样是不会阻塞线程了，但是你还是要不断的轮询来读取或写入。相当于你去查看有没有数据，告诉你没有，过一会再来吧！应用过一会再来问，有没有数据？没有数据，会有一个返回。但是依旧很不好。应用必须得过一会来一下，问问内核有木有数据啊。这和现实很像啊！好多情况都得去某些地方问问好了没有？木有，明天再过来。明天，好了木有？木有，后天再过来。。。。。忙碌的应用。。。。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/node-js/" rel="tag"># node.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/09/5express%E4%BB%8B%E7%BB%8D/" rel="next" title="5express介绍">
+                <i class="fa fa-chevron-left"></i> 5express介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/09/5.express%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8/" rel="prev" title="5express框架使用">
+                5express框架使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+            <a href="/">
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="gqq" />
+                </a>
+            
+              <p class="site-author-name" itemprop="name">gqq</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#package-json"><span class="nav-text">package.json</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一：理解node-js基于事件驱动"><span class="nav-text">一：理解node.js基于事件驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Node，在你准备好的时候调用我吧！"><span class="nav-text">Node，在你准备好的时候调用我吧！</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现代-JavaScript-中回调函数的替代品"><span class="nav-text">现代 JavaScript 中回调函数的替代品</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在-async-await-中使用-Promise"><span class="nav-text">在 async&#x2F;await 中使用 Promise</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventEmitter-模块"><span class="nav-text">EventEmitter 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事件-异步"><span class="nav-text">事件 !&#x3D; 异步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步事件"><span class="nav-text">异步事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件参数及错误"><span class="nav-text">事件参数及错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监听器的顺序"><span class="nav-text">监听器的顺序</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-阻塞I-O与非阻塞I-O"><span class="nav-text">二:阻塞I&#x2F;O与非阻塞I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、阻塞I-O"><span class="nav-text">一、阻塞I&#x2F;O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、非阻塞I-O"><span class="nav-text">二、非阻塞I&#x2F;O</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gqq</span>
+
+  
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+  本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+  <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+  有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

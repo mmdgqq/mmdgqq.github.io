@@ -1,6 +1,405 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>5express框架使用</title>
+    <url>/2020/03/09/5.express%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="1-开启服务"><a href="#1-开启服务" class="headerlink" title="1:开启服务"></a>1:开启服务</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);   <span class="comment">//引进包，返回的是有一个函数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> app = express();   <span class="comment">//执行函数</span></span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"> res.send(<span class="string">"hello world"</span>);  <span class="comment">//服务器返回客户端用send方法</span></span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = app.listen(<span class="number">3000</span>, <span class="string">"localhost"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> host = server.address().address;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> port = server.address().port;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">console</span>.log(<span class="string">"example http://%s:%s"</span>, host, port);</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-静态资源托管"><a href="#2-静态资源托管" class="headerlink" title="2:静态资源托管"></a>2:静态资源托管</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 托管静态资源</span></span><br><span class="line"><span class="comment"> 1:可以指定虚拟目录</span></span><br><span class="line"><span class="comment"> 2：可以指定多个目录作为静态资源的目录</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">let</span> app = express();</span><br><span class="line">app.use(express.static(<span class="string">'public'</span>)) <span class="comment">//'public'为静态资源（HTML，css,图片等的根目录）；</span></span><br><span class="line">app.listen(<span class="number">3000</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"runing"</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>静态资源包括（HTML，css,图片,js文件等)</p>
+<p><a href="http://localhost:3000/hello.html" target="_blank" rel="noopener">http://localhost:3000/hello.html</a></p>
+<h5 id="虚拟目录的概念以及优化代码"><a href="#虚拟目录的概念以及优化代码" class="headerlink" title="虚拟目录的概念以及优化代码"></a>虚拟目录的概念以及优化代码</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> server = app.use(<span class="string">'/abc'</span>, express.static(<span class="string">'public'</span>)) ;</span><br><span class="line">app.use(express.static(<span class="string">'hello'</span>))</span><br><span class="line">server.listen(<span class="number">3000</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"runing"</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>概念：虚拟目录是不存在的，只需要访问时加上的目录叫做虚拟目录</p>
+<p>如上的静态资源根目录前加上 “/abc”,就是虚拟目录，再次访问<a href="http://localhost:3000/hello.html是访问不到的，因为虚拟目录改变了访问时静态资源目录，需要http://localhost:3000/abc/hello.html才可以访问到。" target="_blank" rel="noopener">http://localhost:3000/hello.html是访问不到的，因为虚拟目录改变了访问时静态资源目录，需要http://localhost:3000/abc/hello.html才可以访问到。</a></p>
+<h1 id="3-基本路由处理"><a href="#3-基本路由处理" class="headerlink" title="3:基本路由处理"></a>3:基本路由处理</h1><p>`</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    路由（根据请求路径和请求方式进行路径分发处理）</span></span><br><span class="line"><span class="comment">    http的常用请求方式：</span></span><br><span class="line"><span class="comment">    post   添加</span></span><br><span class="line"><span class="comment">    get    查询</span></span><br><span class="line"><span class="comment">    put    更新</span></span><br><span class="line"><span class="comment">    delete 删除</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   ( restful  api(一个特殊的url地址，不加后缀))</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">'./myrouter.js'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接使用use分发可以处理所有的路由请求</span></span><br><span class="line"><span class="comment">// app.use((req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//     res.send('ok');</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// all方法绑定的路由与请求方式无关</span></span><br><span class="line"><span class="comment">// app.all('/abc',(req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//     res.end('test router');</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 基本的路由处理</span></span><br><span class="line"><span class="comment">// app.get('/',(req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//     res.send('get data');</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// app.post('/',(req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//     res.send('post data');</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// app.put('/',(req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//     res.send('put data');</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// app.delete('/',(req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//     res.send('delete data');</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ----------------------------</span></span><br><span class="line"><span class="comment">// route方法可以指定特定的请求方式</span></span><br><span class="line"><span class="comment">// app.route('/hello')</span></span><br><span class="line"><span class="comment">//    .get((req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//        res.send('get data');</span></span><br><span class="line"><span class="comment">//    &#125;).post((req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//        res.send('post data');</span></span><br><span class="line"><span class="comment">//    &#125;);</span></span><br><span class="line"></span><br><span class="line">app.use(<span class="string">'/admin'</span>,router);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'running...'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="4-中间件"><a href="#4-中间件" class="headerlink" title="4:中间件"></a>4:中间件</h1><p>中间件就是一个处理过程</p>
+<p>通过请求方式get post delete put（路由）挂载中间件，</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="comment">//通过请求方式（路由）挂载中间件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// route方法可以指定特定的请求方式</span></span><br><span class="line"><span class="comment">// app.route('/hello')</span></span><br><span class="line"><span class="comment">//    .get((req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//        res.send('get data');</span></span><br><span class="line"><span class="comment">//    &#125;).post((req,res)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//        res.send('post data');</span></span><br><span class="line"><span class="comment">//    &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cb0 = <span class="function"><span class="keyword">function</span> (<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'ceb0'</span>);</span><br><span class="line">  next();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> cb1 = <span class="function"><span class="keyword">function</span> (<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'ceb1'</span>);</span><br><span class="line">  next();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> cb2 = <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.send(<span class="string">"cb2"</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">app.get(<span class="string">'/ab'</span>, [cb0, cb1, cb2]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'running...'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>以上[cb0, cb1, cb2])中的函数的引用就是中间件，按照顺序向后及进行</p>
+<p>也可以函数的引用和函数一起使用</p>
+<p><strong>通过next()方法走向下一个中间件</strong></p>
+<h1 id="5-应用中间件"><a href="#5-应用中间件" class="headerlink" title="5:应用中间件"></a>5:应用中间件</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    应用中间件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line"><span class="comment">// 挂载内置中间件</span></span><br><span class="line">app.use(express.static(<span class="string">'public'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 挂载参数处理中间件（post）</span></span><br><span class="line">app.use(bodyParser.urlencoded(&#123; <span class="attr">extended</span>: <span class="literal">false</span> &#125;));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理get提交参数</span></span><br><span class="line">app.get(<span class="string">'/login'</span>,(req,res)=&gt;&#123;</span><br><span class="line">    <span class="keyword">let</span> data = req.query;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">    res.send(<span class="string">'get data'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理post提交参数</span></span><br><span class="line">app.post(<span class="string">'/login'</span>,(req,res)=&gt;&#123;</span><br><span class="line">    <span class="keyword">let</span> data = req.body;</span><br><span class="line">    <span class="comment">// console.log(data);</span></span><br><span class="line">    <span class="keyword">if</span>(data.username == <span class="string">'admin'</span> &amp;&amp; data.password == <span class="string">'123'</span>)&#123;</span><br><span class="line">        res.send(<span class="string">'success'</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        res.send(<span class="string">'failure'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'running...'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：get/post参数处理的区别</strong></p>
+<p> let data = req.query;</p>
+<p> let data = req.body;</p>
+<h1 id="6：模板引擎与express框架整合"><a href="#6：模板引擎与express框架整合" class="headerlink" title="6：模板引擎与express框架整合"></a>6：模板引擎与express框架整合</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> template = <span class="built_in">require</span>(<span class="string">'art-template'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="comment">// 1：使express框架去兼容art-template模板引擎</span></span><br><span class="line">app.engine(<span class="string">'art'</span>, <span class="built_in">require</span>(<span class="string">'express-art-template'</span>));</span><br><span class="line"><span class="comment">// 2：设置模板的路径，前面的views 是固定的</span></span><br><span class="line">app.set(<span class="string">'views'</span>, path.join(__dirname, <span class="string">'views'</span>));</span><br><span class="line"><span class="comment">//3: 设置模板引擎  'view engine'  是固定的，后面的‘art’是模板引擎的后缀，与步骤1中的‘art’是对应的</span></span><br><span class="line">app.set(<span class="string">'view engine'</span>, <span class="string">'art'</span>);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/list'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> data = &#123;</span><br><span class="line">    title: <span class="string">'水果'</span>,</span><br><span class="line">    list: [<span class="string">'apple'</span>, <span class="string">'orahe'</span>, <span class="string">'banana'</span>]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 参数一：模板名称；参数二：渲染模板的数据</span></span><br><span class="line">  res.render(<span class="string">'list'</span>, data)</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line">app.listen(<span class="number">3000</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"running"</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在该文件的同级目录下新建目录views</p>
+<p>在views 目录下新建文件 list.art</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>模板<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123;title&#125;&#125;<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">   &#123;&#123;each list&#125;&#125;</span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>&#123;&#123;$value&#125;&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   &#123;&#123;/each&#125;&#125;</span><br><span class="line">   </span><br><span class="line">   <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就会渲染出这个静态页面</p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>7补充</title>
+    <url>/2020/03/09/7%E8%A1%A5%E5%85%85/</url>
+    <content><![CDATA[<h1 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h1><p>简单说来呢，这个 package.json 文件就是定义了项目的各种元信息，包括项目的名称，git repo 的地址，作者等等。最重要的是，其中定义了我们项目的依赖，这样这个项目在部署时，我们就不必将 <code>node_modules</code> 目录也上传到服务器，服务器在拿到我们的项目时，只需要执行 <code>npm install</code>，则 npm 会自动读取 package.json 中的依赖并安装在项目的 <code>node_modules</code> 下面，然后程序就可以在服务器上跑起来了。</p>
+<h1 id="一：理解node-js基于事件驱动"><a href="#一：理解node-js基于事件驱动" class="headerlink" title="一：理解node.js基于事件驱动"></a>一：理解node.js基于事件驱动</h1><p>绝大部分 Node.js 对象，比如 HTTP 请求、响应以及“流”，都使用了 <code>eventEmitter</code> 模块来支持监听和触发事件。</p>
+<p>EventEmitter 是 Node.js 中基于事件驱动的架构的核心，它用于对象之间通信，很多 Node.js 的原生模块都继承自这个模块。</p>
+<p>事件驱动最简单的形式是常见的 Node.js 函数回调，例如：<code>fs.readFile</code>。事件被触发时，Node 就会调用回调函数，所以回调函数可视为事件处理程序。</p>
+<p>让我们来探究一下这个基础形式。</p>
+<h4 id="Node，在你准备好的时候调用我吧！"><a href="#Node，在你准备好的时候调用我吧！" class="headerlink" title="Node，在你准备好的时候调用我吧！"></a>Node，在你准备好的时候调用我吧！</h4><p>以前没有原生的 promise、async/await 特性支持，Node 最原始的处理异步的方式是使用回调。</p>
+<p>回调函数从本质上讲就是作为参数传递给其他函数的函数，在 JS 中这是可能的，因为函数是一等公民。</p>
+<p>回调函数并不一定异步调用，这一点非常重要。在函数中，我们可以根据需要同步/异步调用回调函数。</p>
+<p>例如，在下面例子中，主函数 <code>fileSize</code> 接收一个回调函数 <code>cb</code> 为参数，根据不同情况以同步/异步方式调用 <code>cb</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fileSize (fileName, cb) &#123;</span><br><span class="line">  if (typeof fileName !&#x3D;&#x3D; &#39;string&#39;) &#123;</span><br><span class="line">    return cb(new TypeError(&#39;argument should be string&#39;)); &#x2F;&#x2F; 同步</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  fs.stat(fileName, (err, stats) &#x3D;&gt; &#123;</span><br><span class="line">    if (err) &#123; return cb(err); &#125; &#x2F;&#x2F; 异步</span><br><span class="line"></span><br><span class="line">    cb(null, stats.size); &#x2F;&#x2F; 异步</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>请注意，这并不是一个好的实践，它也许会带来一些预期外的错误。最好将主函数设计为始终同步或始终异步地使用回调。</p>
+<p>我们再来看看下面这种典型的回调风格处理的异步 Node 函数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const readFileAsArray &#x3D; function(file, cb) &#123;</span><br><span class="line">  fs.readFile(file, function(err, data) &#123;</span><br><span class="line">    if (err) &#123;</span><br><span class="line">      return cb(err);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const lines &#x3D; data.toString().trim().split(&#39;\n&#39;);</span><br><span class="line">    cb(null, lines);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;复制代码</span><br></pre></td></tr></table></figure>
+
+<p><code>readFileAsArray</code> 以一个文件路径和回调函数 callback 为参，读取文件并切割成行的数组来当做参数调用 callback。</p>
+<p>这里有一个使用它的示例，假设同目录下我们有一个 <code>numbers.txt</code> 文件中有如下内容:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15复制代码</span><br></pre></td></tr></table></figure>
+
+<p>要找出这个文件中的奇数的个数，我们可以像下面这样调用 <code>readFileAsArray</code> 函数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">readFileAsArray(&#39;.&#x2F;numbers.txt&#39;, (err, lines) &#x3D;&gt; &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line"></span><br><span class="line">  const numbers &#x3D; lines.map(Number);</span><br><span class="line">  const oddNumbers &#x3D; numbers.filter(n &#x3D;&gt; n%2 &#x3D;&#x3D;&#x3D; 1);</span><br><span class="line">  console.log(&#39;Odd numbers count:&#39;, oddNumbers.length);</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>这段代码会读取数组中的字符串，解析成数字并统计奇数个数。</p>
+<p>在 NodeJS 的回调风格中的写法是这样的：回调函数的第一个参数是一个可能为 null 的错误对象 err，而回调函数作为主函数的最后一个参数传入。 你应该永远这么做，因为使用者们极有可能是这么以为的。</p>
+<h4 id="现代-JavaScript-中回调函数的替代品"><a href="#现代-JavaScript-中回调函数的替代品" class="headerlink" title="现代 JavaScript 中回调函数的替代品"></a>现代 JavaScript 中回调函数的替代品</h4><p>在 ES6+ 中，我们有了 Promise 对象。对于异步 API，它是 callback 的有力竞争者。不再需要将 callback 作为参数传递的同时处理错误信息，Promise 对象允许我们分别处理成功和失败两种情况，并且链式的调用多个异步方法避免了回调的嵌套（callback hell，回调地狱）。</p>
+<p>如果刚刚的 <code>readFileAsArray</code> 方法允许使用 Promise，它的调用将是这个样子的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">readFileAsArray(&#39;.&#x2F;numbers.txt&#39;)</span><br><span class="line">  .then(lines &#x3D;&gt; &#123;</span><br><span class="line">    const numbers &#x3D; lines.map(Number);</span><br><span class="line">    const oddNumbers &#x3D; numbers.filter(n &#x3D;&gt; n%2 &#x3D;&#x3D;&#x3D; 1);</span><br><span class="line">    console.log(&#39;Odd numbers count:&#39;, oddNumbers.length);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(console.error);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>作为调用 callback 的替代品，我们用 <code>.then</code> 函数来接受主方法的返回值，<code>.then</code> 中我们可以和之前在回调函数中一样处理数据，而对于错误我们用<code>.catch</code>函数来处理。</p>
+<p>现代 JavaScript 中的 Promise 对象，使主函数支持 Promise 接口变得更加容易。我们把刚刚的 <code>readFileAsArray</code> 方法用改写一下以支持 Promise：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const readFileAsArray &#x3D; function(file, cb &#x3D; () &#x3D;&gt; &#123;&#125;) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    fs.readFile(file, function(err, data) &#123;</span><br><span class="line">      if (err) &#123;</span><br><span class="line">        reject(err);</span><br><span class="line">        return cb(err);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      const lines &#x3D; data.toString().trim().split(&#39;\n&#39;);</span><br><span class="line">      resolve(lines);</span><br><span class="line">      cb(null, lines);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>现在这个函数返回了一个 Promise 对象，该对象包含 <code>fs.readFile</code> 的异步调用，Promise 对象暴露了两个参数：<code>resolve</code> 函数和 <code>reject</code> 函数。</p>
+<p><code>reject</code> 函数的作用就和我们之前 callback 中处理错误是一样的，而 <code>resolve</code> 函数也就和我们正常处理返回值一样。</p>
+<p>剩下唯一要做的就是在实例中指定 <code>reject</code> <code>resolve</code> 函数的默认值，在 Promise 中，我们只要写一个空函数即可，例如 <code>() =&gt; {}</code>.</p>
+<h4 id="在-async-await-中使用-Promise"><a href="#在-async-await-中使用-Promise" class="headerlink" title="在 async/await 中使用 Promise"></a>在 async/await 中使用 Promise</h4><p>当你需要循环异步函数时，使用 Promise 会让你的代码更易阅读，而如果使用回调函数，事情只会变得混乱。</p>
+<p>Promise 是一个小小的进步，generator 是更大一些的小进步，但是 async/await 函数的到来，让这一步变得更有力了，它的编码风格让异步代码就像同步一样易读。</p>
+<p>我们用 async/await 函数特性来改写刚刚的调用 <code>readFileAsArray</code> 过程：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">async function countOdd () &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const lines &#x3D; await readFileAsArray(&#39;.&#x2F;numbers&#39;);</span><br><span class="line">    const numbers &#x3D; lines.map(Number);</span><br><span class="line">    const oddCount &#x3D; numbers.filter(n &#x3D;&gt; n%2 &#x3D;&#x3D;&#x3D; 1).length;</span><br><span class="line">    console.log(&#39;Odd numbers count:&#39;, oddCount);</span><br><span class="line">  &#125; catch(err) &#123;</span><br><span class="line">    console.error(err);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">countOdd();复制代码</span><br></pre></td></tr></table></figure>
+
+<p>首先我们创建了一个 <code>async</code> 函数，只是在定义 function 的时候前面加了 <code>async</code> 关键字。在 <code>async</code> 函数里，使用关键字 <code>await</code> 使 <code>readFileAsArray</code> 函数好像返回普通变量一样，这之后的编码也好像 <code>readFileAsArray</code> 是同步方法一样。</p>
+<p><code>async</code> 函数的执行过程非常易读，而处理错误只需要在异步调用外面包上一层 <code>try/catch</code> 即可。</p>
+<p>在 <code>async/await</code> 函数中我们我们不需要使用任何特殊 API（像: <code>.then</code> 、 <code>.catch</code>\），我们仅仅使用了特殊关键字，并使用普通 JavaScript 编码即可。</p>
+<p>我们可以在支持 Promise 的函数中使用 <code>async/await</code> 函数，但是不能在回调风格的异步方法中使用它，比如 <code>setTimeout</code> 等等。</p>
+<h3 id="EventEmitter-模块"><a href="#EventEmitter-模块" class="headerlink" title="EventEmitter 模块"></a>EventEmitter 模块</h3><p>EventEmitter 是 Node.js 中基于事件驱动的架构的核心，它用于对象之间通信，很多 Node.js 的原生模块都继承自这个模块。</p>
+<p>模块的概念很简单，Emitter 对象触发已命名事件，使之前已注册的监听器被调用，所以 Emitter 对象有两个主要特征：</p>
+<ul>
+<li>触发已命名事件</li>
+<li>注册和取消注册监听函数</li>
+</ul>
+<p>如何使用呢？我们只需要创建一个类来继承 EventEmitter 即可：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MyEmitter extends EventEmitter &#123;</span><br><span class="line"></span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>实例化前面我们基于 EventEmitter 创建的类，即可得到 Emitter 对象：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const myEmitter &#x3D; new MyEmitter();复制代码</span><br></pre></td></tr></table></figure>
+
+<p>在 Emitter 对象的生命周期中的任何一点，我们都可以用 emit 方法发出任何已命名的事件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">myEmitter.emit(&#39;something-happened&#39;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>触发一个事件即某种情况发生的信号，这些情况通常是关于 Emitter 对象的状态改变的。</p>
+<p>我们使用 <code>on</code> 方法来注册，然后这些监听的方法将会在每一个 Emitter 对象 emit 它们对应名称的事件的时候执行。</p>
+<h4 id="事件-异步"><a href="#事件-异步" class="headerlink" title="事件 != 异步"></a>事件 != 异步</h4><p>让我们看一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const EventEmitter &#x3D; require(&#39;events&#39;);</span><br><span class="line"></span><br><span class="line">class WithLog extends EventEmitter &#123;</span><br><span class="line">  execute(taskFunc) &#123;</span><br><span class="line">    console.log(&#39;Before executing&#39;);</span><br><span class="line">    this.emit(&#39;begin&#39;);</span><br><span class="line">    taskFunc();</span><br><span class="line">    this.emit(&#39;end&#39;);</span><br><span class="line">    console.log(&#39;After executing&#39;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const withLog &#x3D; new WithLog();</span><br><span class="line"></span><br><span class="line">withLog.on(&#39;begin&#39;, () &#x3D;&gt; console.log(&#39;About to execute&#39;));</span><br><span class="line">withLog.on(&#39;end&#39;, () &#x3D;&gt; console.log(&#39;Done with execute&#39;));</span><br><span class="line"></span><br><span class="line">withLog.execute(() &#x3D;&gt; console.log(&#39;*** Executing task ***&#39;));复制代码</span><br></pre></td></tr></table></figure>
+
+<p>WithLog 类是一个 event emitter。它有一个 excute 方法，接收一个 taskFunc 任务函数作为参数，并将此函数的执行包含在 log 语句之间，分别在执行之前和之后调用了 emit 方法。</p>
+<p>执行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Before executing</span><br><span class="line">About to execute</span><br><span class="line">*** Executing task ***</span><br><span class="line">Done with execute</span><br><span class="line">After executing复制代码</span><br></pre></td></tr></table></figure>
+
+<p>我们需要注意的是所有的输出 log 都是同步的，在代码里没有任何异步操作。</p>
+<ul>
+<li>第一步 “Before executing”；</li>
+<li>命名为 begin 的事件 emit 输出了 “About to execute”；</li>
+<li>内含方法的执行输出了“<strong>* Executing task *</strong>”；</li>
+<li>另一个命名事件输出“Done with execute”；</li>
+<li>最后“After executing”。</li>
+</ul>
+<p>如同之前的回调方式，events 并不意味着同步或者异步。</p>
+<p>这一点很重要，假如我们给 <code>excute</code> 传递异步函数 <code>taskFunc</code>，事件的触发就不再精确了。</p>
+<p>可以使用 <code>setImmediate</code> 来模拟这种情况：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; ...</span><br><span class="line"></span><br><span class="line">withLog.execute(() &#x3D;&gt; &#123;</span><br><span class="line">  setImmediate(() &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&#39;*** Executing task ***&#39;)</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>会输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Before executing</span><br><span class="line">About to execute</span><br><span class="line">Done with execute</span><br><span class="line">After executing</span><br><span class="line">*** Executing task ***复制代码</span><br></pre></td></tr></table></figure>
+
+<p>这明显有问题，异步调用之后不再精确，“Done with execute”、“After executing”出现在了“<strong><em>Executing task</em></strong>”之前（应该在后）。</p>
+<p>当异步方法结束的时候 emit 一个事件，我们需要把 callback/promise 与事件通信结合起来，刚刚的例子证明了这一点。</p>
+<p>使用事件驱动来代替传统回调函数有一个好处是：在定义多个监听器后，我们可以多次对同一个 emit 做出反应。如果要用回调来做到这一点的话，我们需要些很多的逻辑在同一个回调函数中，事件是应用程序允许多个外部插件在应用程序核心之上构建功能的一个好方法，你可以把它们当作钩子点来允许利用状态变化做更多自定义的事。</p>
+<h4 id="异步事件"><a href="#异步事件" class="headerlink" title="异步事件"></a>异步事件</h4><p>我们把刚刚的例子修改一下，将同步改为异步方式，让它更有意思一点：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">const EventEmitter &#x3D; require(&#39;events&#39;);</span><br><span class="line"></span><br><span class="line">class WithTime extends EventEmitter &#123;</span><br><span class="line">  execute(asyncFunc, ...args) &#123;</span><br><span class="line">    this.emit(&#39;begin&#39;);</span><br><span class="line">    console.time(&#39;execute&#39;);</span><br><span class="line">    asyncFunc(...args, (err, data) &#x3D;&gt; &#123;</span><br><span class="line">      if (err) &#123;</span><br><span class="line">        return this.emit(&#39;error&#39;, err);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      this.emit(&#39;data&#39;, data);</span><br><span class="line">      console.timeEnd(&#39;execute&#39;);</span><br><span class="line">      this.emit(&#39;end&#39;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const withTime &#x3D; new WithTime();</span><br><span class="line"></span><br><span class="line">withTime.on(&#39;begin&#39;, () &#x3D;&gt; console.log(&#39;About to execute&#39;));</span><br><span class="line">withTime.on(&#39;end&#39;, () &#x3D;&gt; console.log(&#39;Done with execute&#39;));</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>WithTime 类执行 <code>asyncFunc</code> 函数，使用 <code>console.time</code> 和 <code>console.timeEnd</code> 来返回执行的时间，它 emit 了正确的序列在执行之前和之后，同样 emit error/data 来保证函数的正常工作。</p>
+<p>我们给 <code>withTime</code> emitter 传递一个异步函数 <code>fs.readFile</code> 作为参数，这样就不再需要回调函数，只要监听 <code>data</code> 事件就可以了。</p>
+<p>执行之后的结果如下，正如我们期待的正确事件序列，我们得到了执行的时间，这是很有用的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">About to execute</span><br><span class="line">execute: 4.507ms</span><br><span class="line">Done with execute复制代码</span><br></pre></td></tr></table></figure>
+
+<p>请注意我们是如何将回调函数与事件发生器结合来完成的，如果 <code>asynFunc</code> 同样支持 Promise 的话，我们可以使用 <code>async/await</code> 特性来做到同样的事情：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class WithTime extends EventEmitter &#123;</span><br><span class="line">  async execute(asyncFunc, ...args) &#123;</span><br><span class="line">    this.emit(&#39;begin&#39;);</span><br><span class="line">    try &#123;</span><br><span class="line">      console.time(&#39;execute&#39;);</span><br><span class="line">      const data &#x3D; await asyncFunc(...args);</span><br><span class="line">      this.emit(&#39;data&#39;, data);</span><br><span class="line">      console.timeEnd(&#39;execute&#39;);</span><br><span class="line">      this.emit(&#39;end&#39;);</span><br><span class="line">    &#125; catch(err) &#123;</span><br><span class="line">      this.emit(&#39;error&#39;, err);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>这真的看起来更易读了呢！<code>async/await</code> 特性使我们的代码更加贴近 JavaScript 本身，我认为这是一大进步。</p>
+<h4 id="事件参数及错误"><a href="#事件参数及错误" class="headerlink" title="事件参数及错误"></a>事件参数及错误</h4><p>在之前的例子中，我们使用了额外的参数触发了两个事件。</p>
+<p><code>error</code> 事件使用了 error 对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">this.emit(&#39;error&#39;, err);复制代码</span><br></pre></td></tr></table></figure>
+
+<p><code>data</code> 事件使用了 data 对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">this.emit(&#39;data&#39;, data);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在命名事件之后使用任何需要的参数，这些参数将在我们为命名事件注册的监听器函数内部可用。</p>
+<p>例如：<code>data</code> 事件执行的时候，监听函数在注册的时候就会允许我们的接收事件触发的 data 参数，而 asyncFunc 函数也实实在在暴露给了我们。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; do something with data</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p><code>error</code> 事件通常是特例。在我们基于 callback 的例子中，如果没用监听函数来处理错误，Node 进程就会直接终止-。-</p>
+<p>我们写个例子来展示这一点：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class WithTime extends EventEmitter &#123;</span><br><span class="line">  execute(asyncFunc, ...args) &#123;</span><br><span class="line">    console.time(&#39;execute&#39;);</span><br><span class="line">    asyncFunc(...args, (err, data) &#x3D;&gt; &#123;</span><br><span class="line">      if (err) &#123;</span><br><span class="line">        return this.emit(&#39;error&#39;, err); &#x2F;&#x2F; Not Handled</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      console.timeEnd(&#39;execute&#39;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const withTime &#x3D; new WithTime();</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, &#39;&#39;); &#x2F;&#x2F; BAD CALL</span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>第一个 execute 函数的调用会触发一个错误，Node 进程会崩溃然后退出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">events.js:163</span><br><span class="line">      throw er; &#x2F;&#x2F; Unhandled &#39;error&#39; event</span><br><span class="line">      ^</span><br><span class="line">Error: ENOENT: no such file or directory, open &#39;&#39;复制代码</span><br></pre></td></tr></table></figure>
+
+<p>第二个 excute 函数调用将受到之前崩溃的影响，可能并不会执行。</p>
+<p>如果我们注册一个监听函数来处理 <code>error</code> 对象，情况就不一样了：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">withTime.on(&#39;error&#39;, (err) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; do something with err, for example log it somewhere</span><br><span class="line">  console.log(err)</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>加上了上面的错误处理，第一个 excute 调用的错误会被报告，但 Node 进程不会再崩溃退出了，其它的调用也会正常执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123; Error: ENOENT: no such file or directory, open &#39;&#39; errno: -2, code: &#39;ENOENT&#39;, syscall: &#39;open&#39;, path: &#39;&#39; &#125;</span><br><span class="line">execute: 4.276ms复制代码</span><br></pre></td></tr></table></figure>
+
+<p>记住：Node.js 目前的表现和 Promise 不同 ：只是输出警告，但最终会改变：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: ENOENT: no such file or directory, open &#39;&#39;</span><br><span class="line"></span><br><span class="line">DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.复制代码</span><br></pre></td></tr></table></figure>
+
+<p>另一种处理异常的方法是注册一个全局的 uncaughtException 进程事件，但是，全局的捕获错误对象并不是一个好办法。</p>
+<p>关于 uncaughtException 的建议是不要使用。你一定要用的话（比如说报告发生了什么或者做一些清理工作），应该让进程在此结束：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">process.on(&#39;uncaughtException&#39;, (err) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; something went unhandled.</span><br><span class="line">  &#x2F;&#x2F; Do any cleanup and exit anyway!</span><br><span class="line"></span><br><span class="line">  console.error(err); &#x2F;&#x2F; don&#39;t do just that.</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; FORCE exit the process too.</span><br><span class="line">  process.exit(1);</span><br><span class="line">&#125;);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>然而，想象在同一时间发生多个错误事件。这意味着上述的 uncaughtException 监听器会多次触发，这可能对一些清理代码是个问题。一个典型例子是，多次调用数据库关闭操作。</p>
+<p>EventEmitter 模块暴露一个 once 方法。这个方法仅允许调用一次监听器，而非每次触发都调用。所以，这是一个 uncaughtException 的实际用例，在第一次未捕获的异常发生时，我们开始做清理工作，并且知道我们最终会退出进程。</p>
+<h4 id="监听器的顺序"><a href="#监听器的顺序" class="headerlink" title="监听器的顺序"></a>监听器的顺序</h4><p>如果我们在同一个事件上注册多个监听器，则监听器会按顺序触发，第一个注册的监听器就是第一个触发的。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Length: $&#123;data.length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Characters: $&#123;data.toString().length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的输出结果里，“Length” 将会在 “Characters” 之前，因为我们是按照这个顺序定义的。</p>
+<p>如果你想定义一个监听器，还想插队到前面的话，要使用 prependListener 方法来注册。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">withTime.on(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Length: $&#123;data.length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.prependListener(&#39;data&#39;, (data) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#96;Characters: $&#123;data.toString().length&#125;&#96;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">withTime.execute(fs.readFile, __filename);复制代码</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码使得 “Characters” 在 “Length” 之前。</p>
+<p>最后，想移除的话，用 removeListener 方法就好啦！</p>
+<h1 id="二-阻塞I-O与非阻塞I-O"><a href="#二-阻塞I-O与非阻塞I-O" class="headerlink" title="二:阻塞I/O与非阻塞I/O"></a>二:阻塞I/O与非阻塞I/O</h1><h3 id="一、阻塞I-O"><a href="#一、阻塞I-O" class="headerlink" title="一、阻塞I/O"></a>一、阻塞I/O</h3><p>首先，要从你常用的IO操作谈起，比如read和write，通常IO操作都是阻塞I/O的，也就是说当你调用read时，如果没有数据收到，那么线程或者进程就会被挂起，直到收到数据。阻塞的意思，就是一直等着。阻塞I/O就是等着数据过来，进行读写操作。应用的函数进行调用，但是内核一直没有返回，就一直等着。应用的函数长时间处于等待结果的状态，我们就称为阻塞I/O。每个应用都得等着，每个应用都在等着，浪费啊！很像现实中的情况。大家都不干活，等着数据过来，过来工作一下，没有的话继续等着。</p>
+<h3 id="二、非阻塞I-O"><a href="#二、非阻塞I-O" class="headerlink" title="二、非阻塞I/O"></a>二、非阻塞I/O</h3><p>非阻塞IO很简单，通过fcntl（POSIX）或ioctl（Unix）设为非阻塞模式，这时，当你调用read时，如果有数据收到，就返回数据，如果没有数据收到，就立刻返回一个错误，如EWOULDBLOCK。这样是不会阻塞线程了，但是你还是要不断的轮询来读取或写入。相当于你去查看有没有数据，告诉你没有，过一会再来吧！应用过一会再来问，有没有数据？没有数据，会有一个返回。但是依旧很不好。应用必须得过一会来一下，问问内核有木有数据啊。这和现实很像啊！好多情况都得去某些地方问问好了没有？木有，明天再过来。明天，好了木有？木有，后天再过来。。。。。忙碌的应用。。。。</p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>5express介绍</title>
+    <url>/2020/03/09/5express%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<p>/*</p>
+<p>  Node.js的Web开发相关的内容：</p>
+<p>  1、Node.js不需要依赖第三方应用软件（Apache），可以基于api自己实现</p>
+<p>  2、实现静态资源服务器</p>
+<p>  3、路由处理</p>
+<p>  4、动态网站</p>
+<p>  5、模板引擎</p>
+<p>  6、get和post参数传递和处理</p>
+<p>  Web开发框架：express</p>
+<p>*/</p>
+<p>可以去查看express的官方文档</p>
+<p><a href="http://www.expressjs.com.cn/" target="_blank" rel="noopener">http://www.expressjs.com.cn/</a></p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>node_helloworld</title>
+    <url>/2020/03/09/3node_helloworld/</url>
+    <content><![CDATA[<h2 id="1-两种运行方式"><a href="#1-两种运行方式" class="headerlink" title="1:两种运行方式"></a>1:两种运行方式</h2><p>   1:  在cmd中输入node  </p>
+<p>​       输入js代码</p>
+<p>   2：cd到指定目录下，node  文件名.js</p>
+<h2 id="2-部分语法"><a href="#2-部分语法" class="headerlink" title="2:部分语法"></a>2:部分语法</h2><h3 id="1：全局成员概述"><a href="#1：全局成员概述" class="headerlink" title="1：全局成员概述"></a>1：全局成员概述</h3><p>   变量：</p>
+<p>​         __filename</p>
+<p>​        __dirname</p>
+<p>构造函数 class ：</p>
+<p>​     Buffer</p>
+<p>函数</p>
+<p>setTimeout(function () {}, 1000);</p>
+<p>clearTimeout</p>
+<p> 与模块化相关，是node的核心</p>
+<p>exports</p>
+<p>module</p>
+<p>require()</p>
+<h3 id="2：前端标准的模块化规范："><a href="#2：前端标准的模块化规范：" class="headerlink" title="2：前端标准的模块化规范："></a>2：前端标准的模块化规范：</h3><p>1：AMD - requires,js</p>
+<p>2:  CMD —seajs</p>
+<h3 id="3：服务端的模块化规范"><a href="#3：服务端的模块化规范" class="headerlink" title="3：服务端的模块化规范"></a>3：服务端的模块化规范</h3><p>1：CommonJs —-node.js</p>
+<h4 id="1：模块化的相关规则"><a href="#1：模块化的相关规则" class="headerlink" title="1：模块化的相关规则"></a>1：模块化的相关规则</h4><h5 id="1：如何定义模块"><a href="#1：如何定义模块" class="headerlink" title="1：如何定义模块"></a>1：如何定义模块</h5><p>   一个js文件就是一个模块</p>
+<h5 id="2：模块成员的导入和导出"><a href="#2：模块成员的导入和导出" class="headerlink" title="2：模块成员的导入和导出"></a>2：模块成员的导入和导出</h5><p>​    1: exports.sum = sum ;  //</p>
+<p>​    2: module.exports = sum;  //</p>
+<p>​    3:    global 模块成员导出</p>
+<p>​           var flag = 123;</p>
+<p>​          global.flag = flag;</p>
+<h4 id="2-系统核心模块"><a href="#2-系统核心模块" class="headerlink" title="2:系统核心模块"></a>2:系统核心模块</h4><p> fs文件操作</p>
+<p>http 网络操作</p>
+<p>path 路径操作</p>
+<p>querystring 查询参数解析</p>
+<p>url   url解析</p>
+<p>。。。。</p>
+<h3 id="4：模块文件的后缀"><a href="#4：模块文件的后缀" class="headerlink" title="4：模块文件的后缀"></a>4：模块文件的后缀</h3><p>​    有3种情况  .js .json .node(c或者c++编译的)；</p>
+<p>  不写文件后缀时上述三种模块的加载优先级   .js .json .node</p>
+<p>​     </p>
+<p>​     </p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2npm_nrm概念名命令</title>
+    <url>/2020/03/09/2npm_nrm%E6%A6%82%E5%BF%B5%E5%90%8D%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h1 id="几个概念："><a href="#几个概念：" class="headerlink" title="几个概念："></a>几个概念：</h1><p>nrm  nvm npm<br> nrm:管理连接环境 切换镜像<br> nvm :管理切换node版本<br>npm: node的包管理器</p>
+<h2 id="一、什么是nrm"><a href="#一、什么是nrm" class="headerlink" title="一、什么是nrm"></a>一、什么是nrm</h2><p>nrm 是一个 npm 源管理器，允许你快速地在 npm源间切换。<br>什么意思呢，npm默认情况下是使用npm官方源（使用npm config ls命令可以查看），在国内用这个源肯定是不靠谱的，一般我们都会用淘宝npm源：<a href="https://registry.npm.taobao.org/，修改源的方式也很简单，在终端输入：" target="_blank" rel="noopener">https://registry.npm.taobao.org/，修改源的方式也很简单，在终端输入：</a><br>npm set registry <a href="https://registry.npm.taobao.org/" target="_blank" rel="noopener">https://registry.npm.taobao.org/</a><br>再npm config ls查看，已经切换成功。<br>那么，问题来了，如果哪天你又跑去国外了，淘宝源肯定是用不了的，又要切换回官网源，或者哪天你们公司有自己的私有npm源了，又需要切换成公司的源，这样岂不很麻烦？于是有了nrm。</p>
+<h2 id="二、nrm安装"><a href="#二、nrm安装" class="headerlink" title="二、nrm安装"></a>二、nrm安装</h2><p>npm install -g nrm</p>
+<h2 id="三、nrm使用"><a href="#三、nrm使用" class="headerlink" title="三、nrm使用"></a>三、nrm使用</h2><p>1、查看可选源（带*号即为当前使用源）<br>nrm ls</p>
+<p>2、查看当前使用源<br>nrm current</p>
+<p>3、切换源<br>nrm use <registry><br>其中，registry为源名。<br>比如：切换为taobao源<br>nrm use taobao</p>
+<p>4、添加源<br>nrm add <registry> <url><br>其中，registry为源名，url为源地址。<br>比如：添加一个公司私有的npm源，源地址为：<a href="http://192.168.22.11:8888/repository/npm-public/，源名为cpm（随意取）。" target="_blank" rel="noopener">http://192.168.22.11:8888/repository/npm-public/，源名为cpm（随意取）。</a><br>nrm add cpm <a href="http://192.168.22.11:8888/repository/npm-public/" target="_blank" rel="noopener">http://192.168.22.11:8888/repository/npm-public/</a></p>
+<p>然后，查看是否添加成功</p>
+<p>5、删除源<br>nrm del <registry><br>其中，registry为源名。<br>比如：删除刚才添加的cpm源<br>nrm del cpm</p>
+<p>6、测试源速度（即响应时间）<br>nrm test <registry><br>其中，registry为源名。<br>比如：测试官方源和淘宝源的响应时间<br>nrm test npm</p>
+<p>nrm test taobao</p>
+<p>包管理器 npm<br>npm 可以自动管理包的依赖. 只需要安装你想要的包, 不必考虑这个包的依赖包.<br>在 PHP 中, 包管理使用的 Composer, python 中，包管理使用 easy_install 或者 pip，ruby 中我们使用 gem。<br>而在 Node.js 中，对应就是 npm，<br>npm 是 Node.js Package Manager 的意思。</p>
+<p>npm init -y</p>
+<p>-y 的含义：yes的意思，在init的时候省去了敲回车的步骤，生成的默认的package.json</p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1nvm安装步骤</title>
+    <url>/2020/03/09/1nvm%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4/</url>
+    <content><![CDATA[<h1 id="1：下载"><a href="#1：下载" class="headerlink" title="1：下载"></a>1：下载</h1><p>可以到这里下载链接：<a href="https://pan.baidu.com/s/1wW4fH8XnXRiachXHb1Pckw" target="_blank" rel="noopener">https://pan.baidu.com/s/1wW4fH8XnXRiachXHb1Pckw</a> 密码：pn90<br>或者到github上下载最新版本<a href="https://github.com/coreybutler/nvm-windows/releases" target="_blank" rel="noopener">https://github.com/coreybutler/nvm-windows/releases</a></p>
+<p>nvm-noinstall.zip： 这个是绿色免安装版本，但是使用之前需要配置<br>nvm-setup.zip：这是一个安装包，下载之后点击安装，无需配置就可以使用，方便。<br>Source code(zip)：zip压缩的源码<br>Sourc code(tar.gz)：tar.gz的源码，一般用于*nix系统</p>
+<h1 id="2：安装"><a href="#2：安装" class="headerlink" title="2：安装"></a>2：安装</h1><p>安装过程中默认的安装目录是下面连个</p>
+<p>1：C:\Users\gy\AppData\Roaming\nvm</p>
+<p>2:  C:\Program Files\nodejs</p>
+<p>但是我们要用多版本的</p>
+<p>   first：需要在c盘下新建一个文件夹dev,在dev文件夹下面建立连个子文件夹，一个nvm,一个nodejs</p>
+<p>​    将nvm安装在这里。second:执行nvm安装目录下的install.cmd。Third:配置环境变量</p>
+<p>   NVM_HOME—–nvm文件夹的地址,SYSLINK_HOME—-nodejs文件夹的地址，配置path.</p>
+<p>3：安装成功后会出现版本号和一些操作命令，否则报 nvm commond not found</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200205114337627.png" alt="image-20200205114337627"></p>
+<h1 id="3-修改setting文件"><a href="#3-修改setting文件" class="headerlink" title="3:修改setting文件"></a>3:修改setting文件</h1><p>在你安装的目录下找到settings.txt文件，打开后加上<br>node_mirror: <a href="https://npm.taobao.org/mirrors/node/" target="_blank" rel="noopener">https://npm.taobao.org/mirrors/node/</a><br>npm_mirror: <a href="https://npm.taobao.org/mirrors/npm/" target="_blank" rel="noopener">https://npm.taobao.org/mirrors/npm/</a></p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200205114556374.png" alt="image-20200205114556374"></p>
+<p>这一步主要是将npm镜像改为淘宝的镜像，可以提高下载速度。</p>
+<h1 id="4：使用"><a href="#4：使用" class="headerlink" title="4：使用"></a>4：使用</h1><p>nvm arch [32|64]： 显示node是运行在32位还是64位模式。指定32或64来覆盖默认体系结构。<br>-nvm install <version> [arch]：该可以是node.js版本或最新稳定版本latest。（可选[arch]）指定安装32位或64位版本（默认为系统arch）。设置[arch]为all以安装32和64位版本。在命令后面添加–insecure，可以绕过远端下载服务器的SSL验证。<br>nvm list [available]：列出已经安装的node.js版本。可选的available，显示可下载版本的部分列表。这个命令可以简写为nvm ls [available]。<br>nvm on： 启用node.js版本管理。<br>nvm off： 禁用node.js版本管理(不卸载任何东西)<br>nvm proxy [url]： 设置用于下载的代理。留[url]空白，以查看当前的代理。设置[url]为none删除代理。<br>nvm node_mirror [url]：设置node镜像，默认为<a href="https://nodejs.org/dist/.。可以设置为淘宝的镜像https://npm.taobao.org/mirrors/node/" target="_blank" rel="noopener">https://nodejs.org/dist/.。可以设置为淘宝的镜像https://npm.taobao.org/mirrors/node/</a><br>nvm npm_mirror [url]：设置npm镜像，默认为<a href="https://github.com/npm/npm/archive/。可以设置为淘宝的镜像https://npm.taobao.org/mirrors/npm/" target="_blank" rel="noopener">https://github.com/npm/npm/archive/。可以设置为淘宝的镜像https://npm.taobao.org/mirrors/npm/</a><br>nvm uninstall <version>： 卸载指定版本的nodejs。<br>nvm use [version] [arch]： 切换到使用指定的nodejs版本。可以指定32/64位[arch]。<br>-nvm use <arch>：将继续使用所选版本，但根据提供的值切换到32/64位模式<br>nvm root [path]： 设置 nvm 存储node.js不同版本的目录 ,如果未设置，将使用当前目录。<br>-nvm version： 显示当前运行的nvm版本，可以简写为nvm v<br>首先，使用nvm list查看目前已经安装的版本</p>
+<p>nvm list available 显示可下载版本的部分列表</p>
+<p>nvm install 版本号 安装指定的版本的nodejs</p>
+<p>nvm use 版本号 使用指定版本的nodejs</p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>4node实现服务器配置_1步骤</title>
+    <url>/2020/03/09/4node%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE_1%E6%AD%A5%E9%AA%A4/</url>
+    <content><![CDATA[<h1 id="1-创建服务"><a href="#1-创建服务" class="headerlink" title="1:创建服务"></a>1:创建服务</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//on  绑定请求事件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> server = http.createServer().on(<span class="string">'request'</span>, (req, res) =&gt; &#123;</span><br><span class="line"></span><br><span class="line"> res.end(<span class="string">"hello"</span>);  </span><br><span class="line"></span><br><span class="line">&#125;).listen(<span class="number">3000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//下面是简写形式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// http.createServer((req, res) =&gt; &#123;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//  res.end("ok");</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// &#125;).listen(3000)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//listen的第二个参数是 访问时的ip地址 eg: '196.1.1.2'</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-处理请求路径分发问题"><a href="#2-处理请求路径分发问题" class="headerlink" title="2:处理请求路径分发问题"></a>2:处理请求路径分发问题</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    处理请求路径的分发</span></span><br><span class="line"><span class="comment">    1、req对象是Class: http.IncomingMessage的实例对象</span></span><br><span class="line"><span class="comment">    2、res对象是Class: http.ServerResponse的实例对象</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line">http.createServer(<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// req.url可以获取URL中的路径（端口之后部分）</span></span><br><span class="line">    <span class="comment">// res.end(req.url);</span></span><br><span class="line">    <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/index'</span>))&#123;</span><br><span class="line">        <span class="comment">// write向客户端响应内容,可以写多次</span></span><br><span class="line">        res.write(<span class="string">'hello'</span>);</span><br><span class="line">        res.write(<span class="string">'hi'</span>);</span><br><span class="line">        res.write(<span class="string">'nihao'</span>);</span><br><span class="line">        <span class="comment">// end方法用来完成响应，只能执行一次</span></span><br><span class="line">        res.end();</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/about'</span>))&#123;</span><br><span class="line">        res.end(<span class="string">'about'</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        res.end(<span class="string">'no content'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).listen(<span class="number">3000</span>,<span class="string">'192.168.0.106'</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'running...'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-完整响应页面"><a href="#3-完整响应页面" class="headerlink" title="3:完整响应页面"></a>3:完整响应页面</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    响应完整的页面信息</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据路径读取文件的内容，并且响应到浏览器端</span></span><br><span class="line"><span class="keyword">let</span> readFile = <span class="function">(<span class="params">url,res</span>) =&gt;</span> &#123;</span><br><span class="line">    fs.readFile(path.join(__dirname,<span class="string">'www'</span>,url),<span class="string">'utf8'</span>,(err,fileContent)=&gt;&#123;</span><br><span class="line">        <span class="keyword">if</span>(err)&#123;</span><br><span class="line">            res.end(<span class="string">'server error'</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            res.end(fileContent);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http.createServer(<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// 处理路径的分发</span></span><br><span class="line">    <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/index'</span>))&#123;</span><br><span class="line">        readFile(<span class="string">'index.html'</span>,res);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/about'</span>))&#123;</span><br><span class="line">        readFile(<span class="string">'about.html'</span>,res);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/list'</span>))&#123;</span><br><span class="line">        readFile(<span class="string">'list.html'</span>,res);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// 设置相应类型和编码</span></span><br><span class="line">        res.writeHead(<span class="number">200</span>,&#123;</span><br><span class="line">            <span class="string">'Content-Type'</span>:<span class="string">'text/plain; charset=utf8'</span></span><br><span class="line">        &#125;);</span><br><span class="line">        res.end(<span class="string">'页面被狗狗叼走了'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).listen(<span class="number">3000</span>,<span class="string">'192.168.0.106'</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'running...'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-响应头的合理设置"><a href="#4-响应头的合理设置" class="headerlink" title="4:响应头的合理设置"></a>4:响应头的合理设置</h1><p>以下代码抽成了一个模块，直接require即可使用</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> mime = <span class="built_in">require</span>(<span class="string">'./mime.json'</span>);</span><br><span class="line"></span><br><span class="line">exports.staticServer = <span class="function">(<span class="params">req,res,root</span>) =&gt;</span> &#123;</span><br><span class="line">    fs.readFile(path.join(root,req.url),(err,fileContent)=&gt;&#123;</span><br><span class="line">        <span class="keyword">if</span>(err)&#123;</span><br><span class="line">            <span class="comment">// 没有找到对应文件</span></span><br><span class="line">            res.writeHead(<span class="number">404</span>,&#123;</span><br><span class="line">                <span class="string">'Content-Type'</span>:<span class="string">'text/plain; charset=utf8'</span></span><br><span class="line">            &#125;);</span><br><span class="line">            res.end(<span class="string">'页面被狗狗叼走了'</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">let</span> dtype = <span class="string">'text/html'</span>;</span><br><span class="line">            <span class="comment">// 获取请求文件的后缀</span></span><br><span class="line">            <span class="keyword">let</span> ext = path.extname(req.url);</span><br><span class="line">            <span class="comment">// 如果请求的文件后缀合理，就获取到标准的响应格式</span></span><br><span class="line">            <span class="keyword">if</span>(mime[ext])&#123;</span><br><span class="line">                dtype = mime[ext];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 如果响应的内容是文本，就设置成utf8编码</span></span><br><span class="line">            <span class="keyword">if</span>(dtype.startsWith(<span class="string">'text'</span>))&#123;</span><br><span class="line">                dtype += <span class="string">'; charset=utf8'</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 设置响应头信息</span></span><br><span class="line">            res.writeHead(<span class="number">200</span>,&#123;</span><br><span class="line">                <span class="string">'Content-Type'</span>:dtype</span><br><span class="line">            &#125;);</span><br><span class="line">            res.end(fileContent);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">const</span> ss = <span class="built_in">require</span>(<span class="string">'./06.js'</span>);    <span class="comment">//即 ，如上的模块</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line">http.createServer(<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// ss.staticServer(req,res,path.join(__dirname,'www'));</span></span><br><span class="line">    ss.staticServer(req,res,path.join(<span class="string">'C:\\Users\\www\\Desktop'</span>,<span class="string">'test'</span>));</span><br><span class="line">&#125;).listen(<span class="number">3000</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'running....'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-get参数处理-url核心模块"><a href="#5-get参数处理-url核心模块" class="headerlink" title="5:get参数处理-url核心模块"></a>5:get参数处理-url核心模块</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    get参数处理-url核心模块</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// const url = require('url');</span></span><br><span class="line"><span class="comment">// parse方法的作用就是把URL字符串转化为对象</span></span><br><span class="line"><span class="comment">// let str = 'http://www.baidu.com/abc/qqq?flag=123&amp;keyword=java';</span></span><br><span class="line"><span class="comment">// let ret = url.parse(str,true);</span></span><br><span class="line"><span class="comment">// console.log(ret.query.keyword);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// format的作用就是把对象转化为标准的URL字符串</span></span><br><span class="line"><span class="comment">// let obj = &#123;</span></span><br><span class="line"><span class="comment">//   protocol: 'http:',</span></span><br><span class="line"><span class="comment">//   slashes: true,</span></span><br><span class="line"><span class="comment">//   auth: null,</span></span><br><span class="line"><span class="comment">//   host: 'www.baidu.com',</span></span><br><span class="line"><span class="comment">//   port: null,</span></span><br><span class="line"><span class="comment">//   hostname: 'www.baidu.com',</span></span><br><span class="line"><span class="comment">//   hash: null,</span></span><br><span class="line"><span class="comment">//   search: '?flag=123&amp;keyword=java',</span></span><br><span class="line"><span class="comment">//   query: 'flag=123&amp;keyword=java',</span></span><br><span class="line"><span class="comment">//   pathname: '/abc/qqq',</span></span><br><span class="line"><span class="comment">//   path: '/abc/qqq?flag=123&amp;keyword=java',</span></span><br><span class="line"><span class="comment">//   href: 'http://www.baidu.com/abc/qqq?flag=123&amp;keyword=java' </span></span><br><span class="line"><span class="comment">// &#125;;</span></span><br><span class="line"><span class="comment">// let ret1 = url.format(obj);</span></span><br><span class="line"><span class="comment">// console.log(ret1);</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    例子：</span></span><br><span class="line"><span class="comment">    get参数解析</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</span><br><span class="line"></span><br><span class="line">http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> obj = url.parse(req.url, <span class="literal">true</span>);</span><br><span class="line">  res.end(obj.query.username + <span class="string">"====="</span> + obj.query.password);</span><br><span class="line">&#125;).listen(<span class="number">3001</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'running....'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>当请求地址为：</p>
+<p><a href="http://127.0.0.1:3001/?username=123&amp;&amp;password=12345" target="_blank" rel="noopener">http://127.0.0.1:3001/?username=123&amp;&amp;password=12345</a></p>
+<p> 界面输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">123&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;12345</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-post参数处理"><a href="#6-post参数处理" class="headerlink" title="6:post参数处理"></a>6:post参数处理</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    post参数处理</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> querystring = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// parse方法的作用就是把字符串转成对象</span></span><br><span class="line"><span class="comment">// let param = 'username=lisi&amp;password=123';</span></span><br><span class="line"><span class="comment">// let param = 'foo=bar&amp;abc=xyz&amp;abc=123';</span></span><br><span class="line"><span class="comment">// let obj = querystring.parse(param);</span></span><br><span class="line"><span class="comment">// console.log(obj);</span></span><br><span class="line"><span class="comment">// // stringify的作用就是把对象转成字符串</span></span><br><span class="line"><span class="comment">// let obj1 = &#123;</span></span><br><span class="line"><span class="comment">//     flag : '123',</span></span><br><span class="line"><span class="comment">//     abc : ['hello','hi']</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"><span class="comment">// let str1 = querystring.stringify(obj1);</span></span><br><span class="line"><span class="comment">// console.log(str1);</span></span><br><span class="line"></span><br><span class="line">http.createServer(<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/login'</span>))&#123;</span><br><span class="line">        <span class="keyword">let</span> pdata = <span class="string">''</span>;</span><br><span class="line">        req.on(<span class="string">'data'</span>,(chunk)=&gt;&#123;</span><br><span class="line">            <span class="comment">// 每次获取一部分数据，</span></span><br><span class="line">            pdata += chunk; <span class="comment">//每次都拼接一下</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        req.on(<span class="string">'end'</span>,()=&gt;&#123;</span><br><span class="line">            <span class="comment">// 这里才能得到完整的数据</span></span><br><span class="line">            <span class="built_in">console</span>.log(pdata);</span><br><span class="line">            <span class="keyword">let</span> obj = querystring.parse(pdata);  <span class="comment">//转成对象</span></span><br><span class="line">            res.end(obj.username+<span class="string">'-----'</span>+obj.password);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).listen(<span class="number">3000</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'running...'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>4node实现服务器配置_2规范与字段分析</title>
+    <url>/2020/03/09/4node%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE_2%E8%A7%84%E8%8C%83%E4%B8%8E%E5%AD%97%E6%AE%B5%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="1：包的规范"><a href="#1：包的规范" class="headerlink" title="1：包的规范"></a>1：包的规范</h1><p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200207103415675.png" alt="image-20200207103415675"></p>
+<h2 id="2：package-json字段分析"><a href="#2：package-json字段分析" class="headerlink" title="2：package.json字段分析"></a>2：package.json字段分析</h2><p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200207103453861.png" alt="image-20200207103453861"></p>
+<p>入口文件</p>
+<p>makedown的稍微一点的语法</p>
+<p><img src="C:%5CUsers%5Cgy%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200207104123220.png" alt="image-20200207104123220"></p>
+<p>npm install makedown-it –sava  ,</p>
+<p>这个工具可以将makedown 转化为html语法(知道有这个工具既可以）</p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>4node实现服务器配置_3登录验证功能例子</title>
+    <url>/2020/03/09/4node%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE_3%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81%E5%8A%9F%E8%83%BD%E4%BE%8B%E5%AD%90/</url>
+    <content><![CDATA[<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    登录验证功能</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</span><br><span class="line"><span class="keyword">const</span> querystring = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line"><span class="keyword">const</span> ss = <span class="built_in">require</span>(<span class="string">'./06.js'</span>);</span><br><span class="line"></span><br><span class="line">http.createServer(<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// 启动静态资源服务</span></span><br><span class="line">    <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/www'</span>))&#123;</span><br><span class="line">        ss.staticServer(req,res,__dirname);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(req.url);</span><br><span class="line">    <span class="comment">// 动态资源</span></span><br><span class="line">    <span class="keyword">if</span>(req.url.startsWith(<span class="string">'/login'</span>))&#123;</span><br><span class="line">        <span class="comment">// get请求</span></span><br><span class="line">        <span class="keyword">if</span>(req.method == <span class="string">'GET'</span>)&#123;</span><br><span class="line">            <span class="keyword">let</span> param = url.parse(req.url,<span class="literal">true</span>).query;</span><br><span class="line">            <span class="keyword">if</span>(param.username == <span class="string">'admin'</span> &amp;&amp; param.password == <span class="string">'123'</span>)&#123;</span><br><span class="line">                res.end(<span class="string">'get success'</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                res.end(<span class="string">'get failure'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// post请求</span></span><br><span class="line">        <span class="keyword">if</span>(req.method == <span class="string">'POST'</span>)&#123;</span><br><span class="line">            <span class="keyword">let</span> pdata = <span class="string">''</span>;</span><br><span class="line">            req.on(<span class="string">'data'</span>,(chunk)=&gt;&#123;</span><br><span class="line">                pdata += chunk;</span><br><span class="line">            &#125;);</span><br><span class="line">            req.on(<span class="string">'end'</span>,()=&gt;&#123;</span><br><span class="line">                <span class="keyword">let</span> obj = querystring.parse(pdata);</span><br><span class="line">                <span class="keyword">if</span>(obj.username == <span class="string">'admin'</span> &amp;&amp; obj.password == <span class="string">'123'</span>)&#123;</span><br><span class="line">                    res.end(<span class="string">'post success'</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    res.end(<span class="string">'post failure'</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;).listen(<span class="number">3000</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'running....'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>4node实现服务器配置_4使用模板引擎对数据做填充和渲染</title>
+    <url>/2020/03/09/4node%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE_4%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E5%AF%B9%E6%95%B0%E6%8D%AE%E5%81%9A%E5%A1%AB%E5%85%85%E5%92%8C%E6%B8%B2%E6%9F%93/</url>
+    <content><![CDATA[<p>art-template</p>
+]]></content>
+      <categories>
+        <category>node.js基础</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>4使用</title>
     <url>/2020/03/06/4%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h1 id="1：目录结构"><a href="#1：目录结构" class="headerlink" title="1：目录结构"></a>1：目录结构</h1><p>dist  是项目做完之后把发布的东西放在里面的一个目录</p>
